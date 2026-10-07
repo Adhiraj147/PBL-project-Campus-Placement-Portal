@@ -1,5 +1,6 @@
 package com.placement.student;
 
+import com.placement.dao.UserDAO;
 import com.placement.db.DBUtils;
 import com.placement.model.*;
 import com.placement.server.SimpleHttpRequest;
@@ -17,6 +18,7 @@ import java.util.List;
  */
 public class StudentServlet extends SimpleHttpServlet {
     private final StudentService studentService = new StudentService();
+    private final UserDAO userDAO = new UserDAO();
 
     @Override
     public void doGet(SimpleHttpRequest req, SimpleHttpResponse resp) throws IOException {
@@ -196,11 +198,42 @@ public class StudentServlet extends SimpleHttpServlet {
     }
 
     private void handleUpdateProfile(SimpleHttpRequest req, SimpleHttpResponse resp, StudentProfile profile) throws IOException {
+        String fullName = req.getParameter("fullName");
+        String rollNumber = req.getParameter("rollNumber");
+        String branch = req.getParameter("branch");
+        String cgpaStr = req.getParameter("cgpa");
+
         String skills = req.getParameter("skills");
         String bio = req.getParameter("bio");
         String resumeUrl = req.getParameter("resumeUrl");
         String linkedinUrl = req.getParameter("linkedinUrl");
         String githubUrl = req.getParameter("githubUrl");
+
+        if (fullName != null && !fullName.trim().isEmpty()) {
+            SimpleHttpSession session = req.getSession(false);
+            if (session != null) {
+                User u = (User) session.getAttribute("user");
+                if (u != null) {
+                    u.setFullName(fullName.trim());
+                    userDAO.updateUser(u);
+                    profile.setStudentName(fullName.trim());
+                }
+            }
+        }
+        if (rollNumber != null && !rollNumber.trim().isEmpty()) {
+            profile.setRollNumber(rollNumber.trim());
+        }
+        if (branch != null && !branch.trim().isEmpty()) {
+            profile.setBranch(branch.trim());
+        }
+        if (cgpaStr != null && !cgpaStr.trim().isEmpty()) {
+            try {
+                double val = Double.parseDouble(cgpaStr.trim());
+                if (val >= 0.0 && val <= 10.0) {
+                    profile.setCgpa(val);
+                }
+            } catch (NumberFormatException ignored) {}
+        }
 
         if (skills != null) profile.setSkills(skills);
         if (bio != null) profile.setBio(bio);

@@ -330,7 +330,20 @@ public class InMemoryDB {
             int id = studentSeq.incrementAndGet();
             sp.setId(id);
         }
+        User u = users.get(sp.getUserId());
+        if (u != null && sp.getStudentName() == null) {
+            sp.setStudentName(u.getFullName());
+        }
         students.put(sp.getId(), sp);
+        for (Application a : applications.values()) {
+            if (a.getStudentId() == sp.getId()) {
+                if (sp.getStudentName() != null) a.setStudentName(sp.getStudentName());
+                if (sp.getRollNumber() != null) a.setRollNumber(sp.getRollNumber());
+                if (sp.getBranch() != null) a.setBranch(sp.getBranch());
+                a.setCgpa(sp.getCgpa());
+                if (sp.getResumeUrl() != null) a.setResumeUrl(sp.getResumeUrl());
+            }
+        }
         return sp;
     }
 
