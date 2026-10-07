@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recruiter & Corporate Console | Campus Placement Portal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <canvas id="canvas-constellation"></canvas>
+
+    <header class="top-nav">
+        <a href="/" class="brand-badge">
+            <div class="brand-icon">🏢</div>
+            <div>
+                <div class="brand-title">RECRUITER CONSOLE</div>
+                <div class="brand-subtitle">Corporate Talent Portal • Module 3 (Saurabh)</div>
+            </div>
+        </a>
+
+        <div style="display: flex; align-items: center; gap: 1rem;">
+            <button class="theme-toggle-btn" onclick="toggleTheme()" title="Toggle Theme">
+                <span class="theme-toggle-icon">☀️</span><span>Light Mode</span>
+            </button>
+            <div style="text-align: right;">
+                <div class="current-user-name" id="recruiterCompanyName" style="font-weight: 600; font-size: 0.95rem;">Google India</div>
+                <div style="font-size: 0.75rem; color: var(--accent-emerald);" id="companyVerificationStatus">VERIFIED PARTNER</div>
+            </div>
+            <button class="btn btn-glass btn-sm" onclick="Auth.logout()">Sign Out</button>
+        </div>
+    </header>
+
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <ul class="sidebar-menu">
+                <li><button class="sidebar-btn active" onclick="switchTab('drives')">💼 Our Campus Drives</button></li>
+                <li><button class="sidebar-btn" onclick="switchTab('applicants')">👥 Candidate Pipeline</button></li>
+                <li><button class="sidebar-btn" onclick="switchTab('interviews')">🎙️ Interview Schedule</button></li>
+                <li><button class="sidebar-btn" onclick="switchTab('profile')">🏢 Company Profile</button></li>
+            </ul>
+        </aside>
+
+        <!-- Main Workspace -->
+        <main class="main-content">
+            <!-- Metrics Row -->
+            <div class="metrics-grid">
+                <div class="glass-panel kpi-card" style="--kpi-glow: var(--accent-cyan-dim)">
+                    <div class="kpi-title">Active Campus Drives</div>
+                    <div class="kpi-value" id="kpiActiveJobs">0</div>
+                    <div class="kpi-subtitle">Open for university applications</div>
+                </div>
+                <div class="glass-panel kpi-card" style="--kpi-glow: var(--accent-indigo-dim)">
+                    <div class="kpi-title">Total Applicants</div>
+                    <div class="kpi-value" id="kpiTotalApplicants">0</div>
+                    <div class="kpi-subtitle">Profiles submitted</div>
+                </div>
+                <div class="glass-panel kpi-card" style="--kpi-glow: var(--accent-emerald-dim)">
+                    <div class="kpi-title">Shortlisted Candidates</div>
+                    <div class="kpi-value" id="kpiShortlisted">0</div>
+                    <div class="kpi-subtitle">Passed preliminary review</div>
+                </div>
+                <div class="glass-panel kpi-card" style="--kpi-glow: var(--accent-amber-dim)">
+                    <div class="kpi-title">Interviews Slated</div>
+                    <div class="kpi-value" id="kpiInterviews">0</div>
+                    <div class="kpi-subtitle">Technical / HR rounds</div>
+                </div>
+            </div>
+
+            <!-- Tab 1: Our Campus Drives -->
+            <section id="tab-drives" class="tab-pane">
+                <div class="page-header">
+                    <div>
+                        <h2 class="page-title">Manage Campus Recruitment Drives</h2>
+                        <p class="page-description">Create, monitor, and configure role criteria and compensation packages.</p>
+                    </div>
+                    <button class="btn btn-cyan" onclick="openModal('createJobModal')">+ Post New Drive</button>
+                </div>
+
+                <div class="jobs-grid" id="recruiterJobsGrid">
+                    <!-- Populated dynamically -->
+                </div>
+            </section>
+
+            <!-- Tab 2: Candidate Pipeline -->
+            <section id="tab-applicants" class="tab-pane" style="display: none;">
+                <div class="page-header">
+                    <div>
+                        <h2 class="page-title">Candidate Review & Shortlisting</h2>
+                        <p class="page-description">Inspect student academic credentials, portfolios, and advance hiring stages.</p>
+                    </div>
+                    <div>
+                        <select id="driveSelect" class="form-select" style="width: 280px;" onchange="loadApplicantsForSelectedDrive()">
+                            <!-- Populated dynamically -->
+                        </select>
+                    </div>
+                </div>
+
+                <div class="table-container glass-panel">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Candidate</th>
+                                <th>Roll No</th>
+                                <th>Branch</th>
+                                <th>CGPA</th>
+                                <th>Portfolio / Resume</th>
+                                <th>Status</th>
+                                <th>Applied</th>
+                                <th>Hiring Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="applicantsTableBody">
+                            <!-- Populated dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Tab 3: Interviews -->
+            <section id="tab-interviews" class="tab-pane" style="display: none;">
+                <div class="page-header">
+                    <div>
+                        <h2 class="page-title">Scheduled Interview Rounds</h2>
+                        <p class="page-description">Virtual meeting links, candidate timings, and round logs.</p>
+                    </div>
+                </div>
+
+                <div class="jobs-grid" id="recruiterInterviewsGrid">
+                    <!-- Populated dynamically -->
+                </div>
+            </section>
+
+            <!-- Tab 4: Company Profile -->
+            <section id="tab-profile" class="tab-pane" style="display: none;">
+                <div class="page-header">
+                    <div>
+                        <h2 class="page-title">Corporate Organization Profile</h2>
+                        <p class="page-description">University-visible enterprise branding and recruiter contact coordinates.</p>
+                    </div>
+                </div>
+
+                <div class="glass-panel" style="padding: 2rem; max-width: 800px;">
+                    <form id="companyProfileForm">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                            <div class="form-group">
+                                <label class="form-label">Company Name</label>
+                                <input type="text" id="cpName" class="form-input" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Industry Domain</label>
+                                <input type="text" id="cpIndustry" class="form-input" required>
+                            </div>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                            <div class="form-group">
+                                <label class="form-label">Primary Office Location</label>
+                                <input type="text" id="cpLocation" class="form-input" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Corporate Website</label>
+                                <input type="url" id="cpWebsite" class="form-input">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Company Overview</label>
+                            <textarea id="cpDescription" class="form-textarea" rows="4"></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-cyan">Update Profile Details</button>
+                    </form>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Create Job Modal -->
+    <div id="createJobModal" class="modal-overlay">
+        <div class="glass-panel modal-content">
+            <button class="modal-close" onclick="closeModal('createJobModal')">&times;</button>
+            <h3 style="font-family: var(--font-display); font-size: 1.4rem; margin-bottom: 0.5rem;">Create Campus Recruitment Drive</h3>
+            <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1.5rem;">Publish an opening to eligible university students.</p>
+
+            <form id="createJobForm">
+                <div class="form-group">
+                    <label class="form-label">Position Title</label>
+                    <input type="text" id="jobTitle" class="form-input" placeholder="e.g. Associate Software Engineer" required>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                        <label class="form-label">Opening Type</label>
+                        <select id="jobType" class="form-select">
+                            <option value="FULL_TIME">Full Time (FTE)</option>
+                            <option value="INTERNSHIP">Internship</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Location</label>
+                        <input type="text" id="jobLocation" class="form-input" placeholder="e.g. Bengaluru / Remote" required>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                        <label class="form-label">Package (LPA) / Stipend (₹/mo)</label>
+                        <input type="number" step="0.1" id="jobPackage" class="form-input" placeholder="e.g. 24.5" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Minimum CGPA Required</label>
+                        <input type="number" step="0.1" min="0" max="10" id="jobMinCgpa" class="form-input" value="7.5" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Eligible Departments</label>
+                    <input type="text" id="jobBranches" class="form-input" value="Computer Science & Engineering, Information Technology" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Role Description & Requirements</label>
+                    <textarea id="jobDesc" class="form-textarea" rows="3" placeholder="Brief technical expectations..."></textarea>
+                </div>
+
+                <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 1rem;">
+                    <button type="button" class="btn btn-glass" onclick="closeModal('createJobModal')">Cancel</button>
+                    <button type="submit" class="btn btn-cyan">Publish Drive →</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Schedule Interview Modal -->
+    <div id="scheduleModal" class="modal-overlay">
+        <div class="glass-panel modal-content">
+            <button class="modal-close" onclick="closeModal('scheduleModal')">&times;</button>
+            <h3 style="font-family: var(--font-display); font-size: 1.4rem; margin-bottom: 0.5rem;">Schedule Candidate Interview</h3>
+            <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1.5rem;" id="scheduleCandidateName">Select date, time and video link.</p>
+
+            <form id="scheduleForm">
+                <input type="hidden" id="schAppId">
+                <div class="form-group">
+                    <label class="form-label">Interview Round Name</label>
+                    <input type="text" id="schRound" class="form-input" placeholder="e.g. Technical Round 1: Data Structures" required>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                        <label class="form-label">Scheduled Date & Time</label>
+                        <input type="datetime-local" id="schTime" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Interview Mode</label>
+                        <select id="schMode" class="form-select">
+                            <option value="ONLINE">Online (Virtual)</option>
+                            <option value="IN_PERSON">In-Person (Campus)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Meeting Link (Google Meet / Zoom / Teams)</label>
+                    <input type="url" id="schLink" class="form-input" placeholder="https://meet.google.com/xyz" required>
+                </div>
+
+                <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 1rem;">
+                    <button type="button" class="btn btn-glass" onclick="closeModal('scheduleModal')">Cancel</button>
+                    <button type="submit" class="btn btn-cyan">Schedule & Notify Candidate →</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="/js/app.js"></script>
+    <script>
+        let myJobs = [];
+
+        function switchTab(tab) {
+            document.querySelectorAll('.tab-pane').forEach(el => el.style.display = 'none');
+            document.querySelectorAll('.sidebar-btn').forEach(btn => btn.classList.remove('active'));
+
+            const target = document.getElementById('tab-' + tab);
+            if (target) target.style.display = 'block';
+
+            event.target.classList.add('active');
+        }
+
+        async function initRecruiterDashboard() {
+            const user = await Auth.requireAuth('RECRUITER');
+            if (!user) return;
+
+            loadCompanyProfile();
+            loadJobs();
+            loadInterviews();
+        }
+
+        async function loadCompanyProfile() {
+            try {
+                const res = await fetch('/api/recruiter/profile');
+                const data = await res.json();
+                document.getElementById('recruiterCompanyName').textContent = data.companyName;
+                document.getElementById('companyVerificationStatus').textContent = data.verificationStatus + ' PARTNER';
+
+                document.getElementById('cpName').value = data.companyName;
+                document.getElementById('cpIndustry').value = data.industry;
+                document.getElementById('cpLocation').value = data.location;
+                document.getElementById('cpWebsite').value = data.website || '';
+                document.getElementById('cpDescription').value = data.description || '';
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        async function loadJobs() {
+            try {
+                const res = await fetch('/api/recruiter/jobs');
+                myJobs = await res.json();
+
+                const grid = document.getElementById('recruiterJobsGrid');
+                grid.innerHTML = '';
+
+                const select = document.getElementById('driveSelect');
+                select.innerHTML = '';
+
+                let totalApplicants = 0;
+
+                myJobs.forEach(j => {
+                    totalApplicants += j.applicantCount;
+
+                    // Populate Select
+                    const opt = document.createElement('option');
+                    opt.value = j.id;
+                    opt.textContent = `${j.title} (${j.applicantCount} Applicants)`;
+                    select.appendChild(opt);
+
+                    // Render Card
+                    const card = document.createElement('div');
+                    card.className = 'glass-panel job-card';
+                    const pkg = j.packageLpa > 0 ? `₹ ${j.packageLpa} LPA` : `₹ ${j.stipendPm} /mo`;
+
+                    card.innerHTML = `
+                        <div>
+                            <div class="job-header">
+                                <div>
+                                    <span class="job-company">${j.jobType}</span>
+                                    <h3 class="job-title">${j.title}</h3>
+                                </div>
+                                <span class="badge badge-active">${j.status}</span>
+                            </div>
+                            <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 0.5rem;">${j.description}</p>
+                            <div class="job-details">
+                                <span class="job-package">${pkg}</span>
+                                <span>📍 ${j.location}</span>
+                                <span>🎯 Min CGPA: ${j.minCgpa}</span>
+                                <span>👥 ${j.applicantCount} Candidates</span>
+                            </div>
+                        </div>
+                        <div style="margin-top: 1.25rem; display: flex; gap: 8px;">
+                            <button class="btn btn-glass btn-sm" onclick="viewApplicantsFor(${j.id})">Review Pipeline (${j.applicantCount})</button>
+                            <button class="btn btn-danger btn-sm" onclick="deleteJob(${j.id})">Remove</button>
+                        </div>
+                    `;
+                    grid.appendChild(card);
+                });
+
+                document.getElementById('kpiActiveJobs').textContent = myJobs.length;
+                document.getElementById('kpiTotalApplicants').textContent = totalApplicants;
+
+                if (myJobs.length > 0) {
+                    loadApplicantsForSelectedDrive();
+                }
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        function viewApplicantsFor(jobId) {
+            document.getElementById('driveSelect').value = jobId;
+            switchTab('applicants');
+            loadApplicantsForSelectedDrive();
+        }
+
+        async function loadApplicantsForSelectedDrive() {
+            const jobId = document.getElementById('driveSelect').value;
+            if (!jobId) return;
+
+            try {
+                const res = await fetch(`/api/recruiter/applicants?jobId=${jobId}`);
+                const apps = await res.json();
+                const tbody = document.getElementById('applicantsTableBody');
+                tbody.innerHTML = '';
+
+                let shortlisted = 0;
+
+                apps.forEach(a => {
+                    if (a.status === 'SHORTLISTED') shortlisted++;
+
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>
+                            <strong>${a.studentName}</strong>
+                            <div style="font-size: 0.75rem; color: var(--text-muted);">${a.studentEmail}</div>
+                        </td>
+                        <td>${a.rollNumber}</td>
+                        <td>${a.branch}</td>
+                        <td><strong style="color: var(--accent-cyan);">${a.cgpa}</strong></td>
+                        <td>
+                            <a href="${a.resumeUrl || '#'}" target="_blank" class="badge badge-shortlisted">View Resume ↗</a>
+                        </td>
+                        <td><span class="badge badge-${a.status.toLowerCase()}">${a.status.replace('_', ' ')}</span></td>
+                        <td>${a.appliedAt}</td>
+                        <td>
+                            <div style="display: flex; gap: 6px;">
+                                <button class="btn btn-cyan btn-sm" onclick="updateAppStatus(${a.id}, 'SHORTLISTED')">Shortlist</button>
+                                <button class="btn btn-glass btn-sm" onclick="openScheduleModal(${a.id}, '${a.studentName.replace(/'/g, "\\'")}')">Schedule 🎙️</button>
+                                <button class="btn btn-danger btn-sm" onclick="updateAppStatus(${a.id}, 'REJECTED')">Reject</button>
+                            </div>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+
+                document.getElementById('kpiShortlisted').textContent = shortlisted;
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        async function updateAppStatus(appId, status) {
+            const formData = new URLSearchParams();
+            formData.append('applicationId', appId);
+            formData.append('status', status);
+
+            const res = await fetch('/api/recruiter/applicants/status', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: formData
+            });
+            const data = await res.json();
+            if (data.success) {
+                showToast(data.message, 'success');
+                loadApplicantsForSelectedDrive();
+            }
+        }
+
+        function openScheduleModal(appId, name) {
+            document.getElementById('schAppId').value = appId;
+            document.getElementById('scheduleCandidateName').textContent = `Candidate: ${name}`;
+            openModal('scheduleModal');
+        }
+
+        document.getElementById('scheduleForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new URLSearchParams();
+            formData.append('applicationId', document.getElementById('schAppId').value);
+            formData.append('roundName', document.getElementById('schRound').value);
+            formData.append('scheduledTime', document.getElementById('schTime').value);
+            formData.append('mode', document.getElementById('schMode').value);
+            formData.append('meetingLink', document.getElementById('schLink').value);
+
+            const res = await fetch('/api/recruiter/interviews/schedule', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: formData
+            });
+            const data = await res.json();
+            if (data.success) {
+                showToast('Interview confirmed and dispatched!', 'success');
+                closeModal('scheduleModal');
+                loadApplicantsForSelectedDrive();
+                loadInterviews();
+            }
+        });
+
+        async function loadInterviews() {
+            try {
+                const res = await fetch('/api/recruiter/interviews');
+                const list = await res.json();
+                document.getElementById('kpiInterviews').textContent = list.length;
+
+                const grid = document.getElementById('recruiterInterviewsGrid');
+                grid.innerHTML = '';
+
+                list.forEach(i => {
+                    const card = document.createElement('div');
+                    card.className = 'glass-panel job-card';
+                    card.innerHTML = `
+                        <div>
+                            <div class="job-header">
+                                <div>
+                                    <span class="job-company">${i.jobTitle}</span>
+                                    <h3 class="job-title">${i.roundName}</h3>
+                                </div>
+                                <span class="badge badge-interview_scheduled">${i.mode}</span>
+                            </div>
+                            <p style="font-size: 0.9rem; margin-top: 0.5rem;">Candidate: <strong>${i.studentName}</strong> (${i.studentEmail})</p>
+                            <div class="job-details">
+                                <span>🗓️ <strong>${i.scheduledTime}</strong></span>
+                            </div>
+                        </div>
+                        <div style="margin-top: 1rem;">
+                            <a href="${i.meetingLink}" target="_blank" class="btn btn-cyan btn-sm" style="width: 100%;">Join Video Call →</a>
+                        </div>
+                    `;
+                    grid.appendChild(card);
+                });
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        document.getElementById('createJobForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new URLSearchParams();
+            formData.append('title', document.getElementById('jobTitle').value);
+            formData.append('jobType', document.getElementById('jobType').value);
+            formData.append('location', document.getElementById('jobLocation').value);
+
+            const pkg = document.getElementById('jobPackage').value;
+            if (document.getElementById('jobType').value === 'FULL_TIME') {
+                formData.append('packageLpa', pkg);
+            } else {
+                formData.append('stipendPm', pkg);
+            }
+
+            formData.append('minCgpa', document.getElementById('jobMinCgpa').value);
+            formData.append('eligibleBranches', document.getElementById('jobBranches').value);
+            formData.append('description', document.getElementById('jobDesc').value);
+
+            const res = await fetch('/api/recruiter/jobs/create', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: formData
+            });
+            const data = await res.json();
+            if (data.success) {
+                showToast('Drive published live to students!', 'success');
+                closeModal('createJobModal');
+                loadJobs();
+            }
+        });
+
+        async function deleteJob(jobId) {
+            if (!confirm('Are you sure you want to delete this job drive?')) return;
+            const formData = new URLSearchParams();
+            formData.append('jobId', jobId);
+            const res = await fetch('/api/recruiter/jobs/delete', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: formData
+            });
+            const data = await res.json();
+            if (data.success) {
+                showToast('Job drive removed', 'info');
+                loadJobs();
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', initRecruiterDashboard);
+    </script>
+</body>
+</html>

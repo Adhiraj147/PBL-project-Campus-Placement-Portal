@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Command Center | Campus Placement Portal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <canvas id="canvas-constellation"></canvas>
+
+    <header class="top-nav">
+        <a href="/" class="brand-badge">
+            <div class="brand-icon">👨‍🎓</div>
+            <div>
+                <div class="brand-title">STUDENT PORTAL</div>
+                <div class="brand-subtitle">Candidate Dashboard • Module 2 (Shlok)</div>
+            </div>
+        </a>
+
+        <div style="display: flex; align-items: center; gap: 1rem;">
+            <button class="theme-toggle-btn" onclick="toggleTheme()" title="Toggle Theme">
+                <span class="theme-toggle-icon">☀️</span><span>Light Mode</span>
+            </button>
+            <div style="text-align: right;">
+                <div class="current-user-name" style="font-weight: 600; font-size: 0.95rem;">Himanshu Yadav</div>
+                <div style="font-size: 0.75rem; color: var(--accent-cyan);" id="userStudentBranch">CSE • CGPA: 9.40</div>
+            </div>
+            <button class="btn btn-glass btn-sm" onclick="Auth.logout()">Sign Out</button>
+        </div>
+    </header>
+
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <ul class="sidebar-menu">
+                <li><button class="sidebar-btn active" onclick="switchTab('jobs')">💼 Available Drives</button></li>
+                <li><button class="sidebar-btn" onclick="switchTab('applications')">📑 My Applications</button></li>
+                <li><button class="sidebar-btn" onclick="switchTab('interviews')">🎙️ Interviews</button></li>
+                <li><button class="sidebar-btn" onclick="switchTab('profile')">👤 My Profile & Resume</button></li>
+                <li><button class="sidebar-btn" onclick="switchTab('notifications')">🔔 Notifications (<span id="notifCount">0</span>)</button></li>
+            </ul>
+        </aside>
+
+        <!-- Main Workspace -->
+        <main class="main-content">
+            <!-- Metrics Row -->
+            <div class="metrics-grid">
+                <div class="glass-panel kpi-card" style="--kpi-glow: var(--accent-cyan-dim)">
+                    <div class="kpi-title">Applications Submitted</div>
+                    <div class="kpi-value" id="statApplied">0</div>
+                    <div class="kpi-subtitle">Active placement drives</div>
+                </div>
+                <div class="glass-panel kpi-card" style="--kpi-glow: var(--accent-indigo-dim)">
+                    <div class="kpi-title">Shortlisted Drives</div>
+                    <div class="kpi-value" id="statShortlisted">0</div>
+                    <div class="kpi-subtitle">Passed initial screening</div>
+                </div>
+                <div class="glass-panel kpi-card" style="--kpi-glow: var(--accent-amber-dim)">
+                    <div class="kpi-title">Interviews Scheduled</div>
+                    <div class="kpi-value" id="statInterviews">0</div>
+                    <div class="kpi-subtitle">Upcoming rounds</div>
+                </div>
+                <div class="glass-panel kpi-card" style="--kpi-glow: var(--accent-emerald-dim)">
+                    <div class="kpi-title">Offers Confirmed</div>
+                    <div class="kpi-value" id="statOffers">0</div>
+                    <div class="kpi-subtitle" style="color: var(--accent-emerald);">Selected by corporate partner</div>
+                </div>
+            </div>
+
+            <!-- Tab 1: Available Drives -->
+            <section id="tab-jobs" class="tab-pane">
+                <div class="page-header">
+                    <div>
+                        <h2 class="page-title">Campus Placement & Internship Drives</h2>
+                        <p class="page-description">Automated eligibility filtering based on your department and CGPA.</p>
+                    </div>
+                    <div style="display: flex; gap: 10px;">
+                        <input type="text" id="jobSearchInput" class="form-input" placeholder="🔍 Search roles, companies..." style="width: 240px;" oninput="filterJobs()">
+                    </div>
+                </div>
+
+                <div class="jobs-grid" id="jobsContainer">
+                    <!-- Populated dynamically via JavaScript -->
+                </div>
+            </section>
+
+            <!-- Tab 2: My Applications -->
+            <section id="tab-applications" class="tab-pane" style="display: none;">
+                <div class="page-header">
+                    <div>
+                        <h2 class="page-title">Application Status Tracking</h2>
+                        <p class="page-description">Real-time status of all your company submissions.</p>
+                    </div>
+                </div>
+
+                <div class="table-container glass-panel">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Drive Title</th>
+                                <th>Company</th>
+                                <th>Type</th>
+                                <th>Package / Stipend</th>
+                                <th>Status</th>
+                                <th>Applied Date</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="applicationsTableBody">
+                            <!-- Populated dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Tab 3: Interviews -->
+            <section id="tab-interviews" class="tab-pane" style="display: none;">
+                <div class="page-header">
+                    <div>
+                        <h2 class="page-title">Scheduled Interview Rounds</h2>
+                        <p class="page-description">Virtual meeting links, timings, and recruiter guidelines.</p>
+                    </div>
+                </div>
+
+                <div class="jobs-grid" id="interviewsContainer">
+                    <!-- Populated dynamically -->
+                </div>
+            </section>
+
+            <!-- Tab 4: Profile & Resume -->
+            <section id="tab-profile" class="tab-pane" style="display: none;">
+                <div class="page-header">
+                    <div>
+                        <h2 class="page-title">Candidate Profile & Credentials</h2>
+                        <p class="page-description">Keep your academic achievements and resume links current for recruiters.</p>
+                    </div>
+                </div>
+
+                <div class="glass-panel" style="padding: 2rem; max-width: 800px;">
+                    <form id="profileForm">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                            <div class="form-group">
+                                <label class="form-label">Full Name</label>
+                                <input type="text" id="profName" class="form-input" disabled>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Roll Number</label>
+                                <input type="text" id="profRoll" class="form-input" disabled>
+                            </div>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                            <div class="form-group">
+                                <label class="form-label">Department / Branch</label>
+                                <input type="text" id="profBranch" class="form-input" disabled>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Current CGPA</label>
+                                <input type="number" step="0.01" id="profCgpa" class="form-input" disabled>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Resume Cloud Link (Google Drive / GitHub / PDF)</label>
+                            <input type="url" id="profResume" class="form-input" placeholder="https://drive.google.com/your-cv.pdf">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Key Technical Skills (Comma-separated)</label>
+                            <input type="text" id="profSkills" class="form-input" placeholder="Java 24, Spring Boot, MySQL, React, Docker">
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                            <div class="form-group">
+                                <label class="form-label">LinkedIn Profile</label>
+                                <input type="url" id="profLinkedin" class="form-input" placeholder="https://linkedin.com/in/username">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">GitHub Portfolio</label>
+                                <input type="url" id="profGithub" class="form-input" placeholder="https://github.com/username">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Professional Summary & Bio</label>
+                            <textarea id="profBio" class="form-textarea" rows="3" placeholder="Brief technical summary..."></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-cyan">Save Profile Changes</button>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Tab 5: Notifications -->
+            <section id="tab-notifications" class="tab-pane" style="display: none;">
+                <div class="page-header">
+                    <div>
+                        <h2 class="page-title">Notification Center</h2>
+                        <p class="page-description">Automated drive alerts, shortlisting notices, and offer updates.</p>
+                    </div>
+                    <button class="btn btn-glass btn-sm" onclick="markAllNotificationsRead()">Mark All Read</button>
+                </div>
+
+                <div id="notificationsContainer" style="display: flex; flex-direction: column; gap: 12px; max-width: 800px;">
+                    <!-- Populated dynamically -->
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Apply Modal Dialog -->
+    <div id="applyModal" class="modal-overlay">
+        <div class="glass-panel modal-content">
+            <button class="modal-close" onclick="closeModal('applyModal')">&times;</button>
+            <h3 style="font-family: var(--font-display); font-size: 1.4rem; margin-bottom: 0.5rem;" id="applyModalTitle">Apply for Job Drive</h3>
+            <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1.5rem;" id="applyModalSubtitle">Submit your candidacy to recruiter.</p>
+
+            <form id="applyForm">
+                <input type="hidden" id="applyJobId">
+                <div class="form-group">
+                    <label class="form-label">Cover Note / Why are you a good fit?</label>
+                    <textarea id="applyCoverNote" class="form-textarea" rows="4" placeholder="Highlight your relevant projects, coursework, and interest..."></textarea>
+                </div>
+                <div style="display: flex; justify-content: flex-end; gap: 10px;">
+                    <button type="button" class="btn btn-glass" onclick="closeModal('applyModal')">Cancel</button>
+                    <button type="submit" class="btn btn-cyan">Confirm Application →</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="/js/app.js"></script>
+    <script>
+        let allJobsCache = [];
+
+        function switchTab(tab) {
+            document.querySelectorAll('.tab-pane').forEach(el => el.style.display = 'none');
+            document.querySelectorAll('.sidebar-btn').forEach(btn => btn.classList.remove('active'));
+
+            const target = document.getElementById('tab-' + tab);
+            if (target) target.style.display = 'block';
+
+            event.target.classList.add('active');
+        }
+
+        async function initStudentDashboard() {
+            const user = await Auth.requireAuth('STUDENT');
+            if (!user) return;
+
+            loadProfile();
+            loadJobs();
+            loadApplications();
+            loadInterviews();
+            loadNotifications();
+        }
+
+        async function loadProfile() {
+            try {
+                const res = await fetch('/api/student/profile');
+                const data = await res.json();
+                document.getElementById('userStudentBranch').textContent = `${data.branch} • CGPA: ${data.cgpa}`;
+                document.getElementById('profName').value = data.fullName;
+                document.getElementById('profRoll').value = data.rollNumber;
+                document.getElementById('profBranch').value = data.branch;
+                document.getElementById('profCgpa').value = data.cgpa;
+                document.getElementById('profResume').value = data.resumeUrl || '';
+                document.getElementById('profSkills').value = data.skills || '';
+                document.getElementById('profLinkedin').value = data.linkedinUrl || '';
+                document.getElementById('profGithub').value = data.githubUrl || '';
+                document.getElementById('profBio').value = data.bio || '';
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        async function loadJobs() {
+            try {
+                const res = await fetch('/api/student/jobs');
+                allJobsCache = await res.json();
+                renderJobs(allJobsCache);
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        function renderJobs(jobs) {
+            const container = document.getElementById('jobsContainer');
+            container.innerHTML = '';
+
+            if (jobs.length === 0) {
+                container.innerHTML = '<div style="color: var(--text-muted); padding: 2rem;">No matching job openings found.</div>';
+                return;
+            }
+
+            jobs.forEach(job => {
+                const card = document.createElement('div');
+                card.className = 'glass-panel job-card';
+                
+                const packageStr = job.packageLpa > 0 ? `₹ ${job.packageLpa} LPA` : `₹ ${job.stipendPm.toLocaleString()} /mo`;
+                const eligibleBadge = job.isEligible ? 
+                    '<span class="badge badge-active">Eligible</span>' : 
+                    '<span class="badge badge-rejected">Ineligible (CGPA/Branch)</span>';
+
+                const applyBtn = job.isEligible ? 
+                    `<button class="btn btn-cyan btn-sm" onclick="openApplyModal(${job.id}, '${job.title.replace(/'/g, "\\'")}', '${job.companyName.replace(/'/g, "\\'")}')">Apply Now →</button>` : 
+                    `<button class="btn btn-glass btn-sm" disabled style="opacity: 0.5;">Criteria Not Met</button>`;
+
+                card.innerHTML = `
+                    <div>
+                        <div class="job-header">
+                            <div>
+                                <span class="job-company">${job.companyName}</span>
+                                <h3 class="job-title">${job.title}</h3>
+                            </div>
+                            <span class="badge ${job.jobType === 'FULL_TIME' ? 'badge-verified' : 'badge-shortlisted'}">${job.jobType.replace('_', ' ')}</span>
+                        </div>
+                        <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 0.5rem;">${job.description}</p>
+                        <div class="job-details">
+                            <span class="job-package">${packageStr}</span>
+                            <span>📍 ${job.location}</span>
+                            <span>🎯 Min CGPA: ${job.minCgpa}</span>
+                            <span>👥 Applicants: ${job.applicantCount}</span>
+                        </div>
+                        <div style="font-size: 0.75rem; color: var(--text-dim); margin-top: 4px;">Eligible: ${job.eligibleBranches}</div>
+                    </div>
+                    <div style="margin-top: 1.25rem; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--glass-border); padding-top: 1rem;">
+                        ${eligibleBadge}
+                        ${applyBtn}
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function filterJobs() {
+            const q = document.getElementById('jobSearchInput').value.toLowerCase();
+            const filtered = allJobsCache.filter(j => 
+                j.title.toLowerCase().includes(q) || 
+                j.companyName.toLowerCase().includes(q) || 
+                j.location.toLowerCase().includes(q)
+            );
+            renderJobs(filtered);
+        }
+
+        function openApplyModal(jobId, title, company) {
+            document.getElementById('applyJobId').value = jobId;
+            document.getElementById('applyModalTitle').textContent = `Apply for ${title}`;
+            document.getElementById('applyModalSubtitle').textContent = `Role at ${company}`;
+            openModal('applyModal');
+        }
+
+        document.getElementById('applyForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const jobId = document.getElementById('applyJobId').value;
+            const coverNote = document.getElementById('applyCoverNote').value;
+
+            const formData = new URLSearchParams();
+            formData.append('jobId', jobId);
+            formData.append('coverNote', coverNote);
+
+            try {
+                const res = await fetch('/api/student/apply', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: formData
+                });
+                const data = await res.json();
+                if (data.success) {
+                    showToast('Application submitted successfully!', 'success');
+                    closeModal('applyModal');
+                    loadJobs();
+                    loadApplications();
+                    loadNotifications();
+                } else {
+                    showToast(data.message || 'Application failed', 'error');
+                }
+            } catch (err) {
+                showToast(err.message, 'error');
+            }
+        });
+
+        async function loadApplications() {
+            try {
+                const res = await fetch('/api/student/applications');
+                const apps = await res.json();
+                
+                let applied = 0, shortlisted = 0, interviews = 0, selected = 0;
+                const tbody = document.getElementById('applicationsTableBody');
+                tbody.innerHTML = '';
+
+                apps.forEach(a => {
+                    applied++;
+                    if (a.status === 'SHORTLISTED') shortlisted++;
+                    if (a.status === 'INTERVIEW_SCHEDULED') interviews++;
+                    if (a.status === 'SELECTED') selected++;
+
+                    const pkg = a.packageLpa > 0 ? `₹ ${a.packageLpa} LPA` : `₹ ${a.stipendPm} /mo`;
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td style="font-weight: 600;">${a.jobTitle}</td>
+                        <td>${a.companyName}</td>
+                        <td><span class="badge ${a.jobType === 'FULL_TIME' ? 'badge-verified' : 'badge-shortlisted'}">${a.jobType}</span></td>
+                        <td style="color: var(--accent-emerald); font-weight: 600;">${pkg}</td>
+                        <td><span class="badge badge-${a.status.toLowerCase()}">${a.status.replace('_', ' ')}</span></td>
+                        <td>${a.appliedAt}</td>
+                        <td>
+                            <button class="btn btn-danger btn-sm" onclick="withdrawApp(${a.id})">Withdraw</button>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+
+                document.getElementById('statApplied').textContent = applied;
+                document.getElementById('statShortlisted').textContent = shortlisted;
+                document.getElementById('statInterviews').textContent = interviews;
+                document.getElementById('statOffers').textContent = selected;
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        async function withdrawApp(appId) {
+            if (!confirm('Are you sure you want to withdraw this application?')) return;
+            const formData = new URLSearchParams();
+            formData.append('applicationId', appId);
+            const res = await fetch('/api/student/withdraw', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: formData
+            });
+            const data = await res.json();
+            if (data.success) {
+                showToast('Application withdrawn.', 'info');
+                loadApplications();
+                loadJobs();
+            }
+        }
+
+        async function loadInterviews() {
+            try {
+                const res = await fetch('/api/student/interviews');
+                const list = await res.json();
+                const container = document.getElementById('interviewsContainer');
+                container.innerHTML = '';
+
+                if (list.length === 0) {
+                    container.innerHTML = '<div style="color: var(--text-muted); padding: 2rem;">No interviews scheduled yet.</div>';
+                    return;
+                }
+
+                list.forEach(inv => {
+                    const card = document.createElement('div');
+                    card.className = 'glass-panel job-card';
+                    card.innerHTML = `
+                        <div>
+                            <div class="job-header">
+                                <div>
+                                    <span class="job-company">${inv.companyName}</span>
+                                    <h3 class="job-title">${inv.roundName}</h3>
+                                </div>
+                                <span class="badge badge-interview_scheduled">${inv.mode}</span>
+                            </div>
+                            <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 0.5rem;">For Role: ${inv.jobTitle}</p>
+                            <div class="job-details">
+                                <span>🗓️ Time: <strong>${inv.scheduledTime}</strong></span>
+                            </div>
+                            ${inv.feedback ? `<div style="font-size: 0.8rem; background: rgba(0,0,0,0.3); padding: 8px; border-radius: 6px; margin-top: 8px; color: var(--text-muted);">Notes: ${inv.feedback}</div>` : ''}
+                        </div>
+                        <div style="margin-top: 1.25rem;">
+                            <a href="${inv.meetingLink}" target="_blank" class="btn btn-cyan btn-sm" style="width: 100%;">Join Meeting Link →</a>
+                        </div>
+                    `;
+                    container.appendChild(card);
+                });
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        async function loadNotifications() {
+            try {
+                const res = await fetch('/api/student/notifications');
+                const list = await res.json();
+                const container = document.getElementById('notificationsContainer');
+                container.innerHTML = '';
+
+                let unread = 0;
+                list.forEach(n => {
+                    if (!n.isRead) unread++;
+                    const item = document.createElement('div');
+                    item.className = 'glass-panel';
+                    item.style.padding = '1rem 1.25rem';
+                    item.style.borderLeft = n.isRead ? '3px solid var(--text-dim)' : '3px solid var(--accent-cyan)';
+                    item.innerHTML = `
+                        <div style="display: flex; justify-content: space-between;">
+                            <strong style="font-size: 0.95rem;">${n.title}</strong>
+                            <span style="font-size: 0.75rem; color: var(--text-muted);">${n.createdAt}</span>
+                        </div>
+                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;">${n.message}</p>
+                    `;
+                    container.appendChild(item);
+                });
+                document.getElementById('notifCount').textContent = unread;
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        async function markAllNotificationsRead() {
+            await fetch('/api/student/notifications/read', { method: 'POST' });
+            showToast('All notifications marked as read', 'info');
+            loadNotifications();
+        }
+
+        document.getElementById('profileForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new URLSearchParams();
+            formData.append('resumeUrl', document.getElementById('profResume').value);
+            formData.append('skills', document.getElementById('profSkills').value);
+            formData.append('linkedinUrl', document.getElementById('profLinkedin').value);
+            formData.append('githubUrl', document.getElementById('profGithub').value);
+            formData.append('bio', document.getElementById('profBio').value);
+
+            const res = await fetch('/api/student/profile', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: formData
+            });
+            const data = await res.json();
+            if (data.success) {
+                showToast(data.message, 'success');
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', initStudentDashboard);
+    </script>
+</body>
+</html>

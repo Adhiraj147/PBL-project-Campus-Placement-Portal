@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Placement & Internship Portal | Enterprise University Network</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <canvas id="canvas-constellation"></canvas>
+
+    <!-- Top Navigation Bar -->
+    <header class="top-nav">
+        <a href="/" class="brand-badge">
+            <div class="brand-icon">🎓</div>
+            <div>
+                <div class="brand-title">CAMPUS CONNECT</div>
+                <div class="brand-subtitle">Placement & Internship Portal</div>
+            </div>
+        </a>
+
+        <ul class="nav-links">
+            <li><a href="/" class="nav-link active">Home</a></li>
+            <li><a href="#drives" class="nav-link">Active Drives</a></li>
+            <li><a href="#features" class="nav-link">Modules</a></li>
+            <li>
+                <button class="theme-toggle-btn" onclick="toggleTheme()" title="Toggle Theme">
+                    <span class="theme-toggle-icon">☀️</span><span>Light Mode</span>
+                </button>
+            </li>
+            <li><a href="/login.html" class="btn btn-glass btn-sm">Sign In</a></li>
+            <li><a href="/register.html" class="btn btn-cyan btn-sm">Join Portal</a></li>
+        </ul>
+    </header>
+
+    <!-- Hero Section -->
+    <main>
+        <section class="hero-section">
+            <div class="hero-content">
+                <div class="hero-tag">⚡ Autonomous Placement Architecture • PBL 2026</div>
+                <h1 class="hero-heading">
+                    Bridging Students & <span class="gradient-text">World-Class Enterprises.</span>
+                </h1>
+                <p class="hero-desc">
+                    A unified, eligibility-driven campus recruitment portal built in pure Java. 
+                    Streamline job applications, recruiter workflows, interview schedules, and university TPO analytics with real-time transparency.
+                </p>
+
+                <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                    <a href="/login.html" class="btn btn-cyan">
+                        <span>🚀 Launch Student Portal</span>
+                    </a>
+                    <a href="/login.html" class="btn btn-glass">
+                        <span>🏢 Recruiter Console</span>
+                    </a>
+                    <a href="/login.html" class="btn btn-glass">
+                        <span>📊 Admin Analytics</span>
+                    </a>
+                </div>
+
+                <!-- Live Ticker Metrics -->
+                <div style="display: flex; gap: 2rem; margin-top: 3rem; border-top: 1px solid var(--glass-border); padding-top: 1.5rem;">
+                    <div>
+                        <div style="font-family: var(--font-display); font-size: 1.8rem; font-weight: 700; color: var(--accent-cyan);">94.2%</div>
+                        <div style="font-size: 0.8rem; color: var(--text-muted);">Placement Rate</div>
+                    </div>
+                    <div>
+                        <div style="font-family: var(--font-display); font-size: 1.8rem; font-weight: 700; color: var(--accent-emerald);">₹ 28.5 LPA</div>
+                        <div style="font-size: 0.8rem; color: var(--text-muted);">Highest CTC Package</div>
+                    </div>
+                    <div>
+                        <div style="font-family: var(--font-display); font-size: 1.8rem; font-weight: 700; color: var(--accent-indigo);">150+</div>
+                        <div style="font-size: 0.8rem; color: var(--text-muted);">Global Tech Partners</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hero-image-wrap">
+                <img src="/assets/hero.jpg" alt="Campus Placement Holographic Platform">
+            </div>
+        </section>
+
+        <!-- Project Module Division Cards -->
+        <section id="features" style="max-width: 1400px; margin: 4rem auto; padding: 0 2.5rem;">
+            <div style="text-align: center; margin-bottom: 3rem;">
+                <h2 style="font-family: var(--font-display); font-size: 2.2rem; margin-bottom: 0.5rem;">Five Integrated Core Modules</h2>
+                <p style="color: var(--text-muted);">Each module engineered as an independent, fully testable component with Git branch isolation.</p>
+            </div>
+
+            <div class="jobs-grid">
+                <!-- Module 1 -->
+                <div class="glass-panel job-card">
+                    <div>
+                        <div class="job-company">FEATURE / AUTHENTICATION</div>
+                        <h3 class="job-title">1. Authentication & Security</h3>
+                        <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 0.5rem;">
+                            Role-based access control (RBAC), SHA-256 password hashing, session tokens, and route protection filters.
+                        </p>
+                    </div>
+                    <div style="margin-top: 1.5rem; display: flex; justify-content: space-between; align-items: center;">
+                        <span class="badge badge-shortlisted">Lead: Adhiraj</span>
+                        <a href="/login.html" class="btn btn-glass btn-sm">Explore</a>
+                    </div>
+                </div>
+
+                <!-- Module 2 -->
+                <div class="glass-panel job-card">
+                    <div>
+                        <div class="job-company">FEATURE / STUDENT-PORTAL</div>
+                        <h3 class="job-title">2. Student Command Center</h3>
+                        <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 0.5rem;">
+                            Dynamic profile editing, resume repository, automated CGPA/branch eligibility engine, and application pipeline.
+                        </p>
+                    </div>
+                    <div style="margin-top: 1.5rem; display: flex; justify-content: space-between; align-items: center;">
+                        <span class="badge badge-active">Lead: Shlok</span>
+                        <a href="/student-dashboard.html" class="btn btn-glass btn-sm">Explore</a>
+                    </div>
+                </div>
+
+                <!-- Module 3 -->
+                <div class="glass-panel job-card">
+                    <div>
+                        <div class="job-company">FEATURE / RECRUITER-PORTAL</div>
+                        <h3 class="job-title">3. Recruiter & Company Portal</h3>
+                        <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 0.5rem;">
+                            Job & internship posting, resume screening, one-click candidate shortlisting, and live interview scheduling.
+                        </p>
+                    </div>
+                    <div style="margin-top: 1.5rem; display: flex; justify-content: space-between; align-items: center;">
+                        <span class="badge badge-interview_scheduled">Lead: Saurabh</span>
+                        <a href="/recruiter-dashboard.html" class="btn btn-glass btn-sm">Explore</a>
+                    </div>
+                </div>
+
+                <!-- Module 4 -->
+                <div class="glass-panel job-card">
+                    <div>
+                        <div class="job-company">FEATURE / ADMIN-PORTAL</div>
+                        <h3 class="job-title">4. Admin & Analytics Hub</h3>
+                        <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 0.5rem;">
+                            Company verification, drive moderation, branch-wise placement tracking, interactive charts, and exportable reports.
+                        </p>
+                    </div>
+                    <div style="margin-top: 1.5rem; display: flex; justify-content: space-between; align-items: center;">
+                        <span class="badge badge-pending">Lead: Krishna</span>
+                        <a href="/admin-dashboard.html" class="btn btn-glass btn-sm">Explore</a>
+                    </div>
+                </div>
+
+                <!-- Module 5 -->
+                <div class="glass-panel job-card" style="border-color: rgba(0, 240, 255, 0.3);">
+                    <div>
+                        <div class="job-company">FEATURE / DATABASE-INTEGRATION</div>
+                        <h3 class="job-title">5. Database, Test & Runtime</h3>
+                        <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 0.5rem;">
+                            Dual-engine JDBC persistence (MySQL + In-Memory), in-app notifications, automated test runner, and zero-setup server.
+                        </p>
+                    </div>
+                    <div style="margin-top: 1.5rem; display: flex; justify-content: space-between; align-items: center;">
+                        <span class="badge badge-verified">Lead: Himanshu</span>
+                        <span style="font-size: 0.8rem; color: var(--accent-cyan); font-weight: 600;">Full System Lead</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Live Drives Preview -->
+        <section id="drives" style="max-width: 1400px; margin: 4rem auto 6rem; padding: 0 2.5rem;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2rem;">
+                <div>
+                    <h2 style="font-family: var(--font-display); font-size: 2rem;">Top Active Campus Drives</h2>
+                    <p style="color: var(--text-muted);">Current openings verified by the Training and Placement Cell.</p>
+                </div>
+                <a href="/login.html" class="btn btn-cyan btn-sm">View All Drives & Apply →</a>
+            </div>
+
+            <div class="jobs-grid">
+                <div class="glass-panel job-card">
+                    <div class="job-header">
+                        <div>
+                            <span class="job-company">Google India</span>
+                            <h3 class="job-title">Software Development Engineer</h3>
+                        </div>
+                        <span class="badge badge-verified">Full Time</span>
+                    </div>
+                    <p style="color: var(--text-muted); font-size: 0.85rem;">Architect high-scale distributed backend systems using Java/Go.</p>
+                    <div class="job-details">
+                        <span class="job-package">₹ 28.5 LPA</span>
+                        <span>📍 Bengaluru</span>
+                        <span>🎯 Min CGPA: 8.5</span>
+                    </div>
+                    <a href="/login.html" class="btn btn-glass btn-sm" style="width: 100%;">Sign In to Apply</a>
+                </div>
+
+                <div class="glass-panel job-card">
+                    <div class="job-header">
+                        <div>
+                            <span class="job-company">Google India</span>
+                            <h3 class="job-title">Cloud Engineering Summer Intern</h3>
+                        </div>
+                        <span class="badge badge-shortlisted">Internship</span>
+                    </div>
+                    <p style="color: var(--text-muted); font-size: 0.85rem;">Build automated cloud migration workflows on Google Cloud Platform (GCP).</p>
+                    <div class="job-details">
+                        <span class="job-package">₹ 1,10,000 /mo</span>
+                        <span>📍 Bengaluru</span>
+                        <span>🎯 Min CGPA: 8.0</span>
+                    </div>
+                    <a href="/login.html" class="btn btn-glass btn-sm" style="width: 100%;">Sign In to Apply</a>
+                </div>
+
+                <div class="glass-panel job-card">
+                    <div class="job-header">
+                        <div>
+                            <span class="job-company">Microsoft Corporation</span>
+                            <h3 class="job-title">Software Engineer - Azure Core</h3>
+                        </div>
+                        <span class="badge badge-verified">Full Time</span>
+                    </div>
+                    <p style="color: var(--text-muted); font-size: 0.85rem;">Design low-latency virtualization and hyper-scalable cloud network primitives.</p>
+                    <div class="job-details">
+                        <span class="job-package">₹ 25.0 LPA</span>
+                        <span>📍 Hyderabad</span>
+                        <span>🎯 Min CGPA: 8.0</span>
+                    </div>
+                    <a href="/login.html" class="btn btn-glass btn-sm" style="width: 100%;">Sign In to Apply</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer style="border-top: 1px solid var(--glass-border); padding: 2.5rem; text-align: center; color: var(--text-muted); font-size: 0.85rem; background: rgba(7, 9, 14, 0.95);">
+        <p>🎓 Campus Placement and Internship Portal • Advanced Java Programming Lab Project</p>
+        <p style="margin-top: 6px; color: var(--text-dim);">Developed by Adhiraj, Shlok, Saurabh, Krishna & Himanshu Yadav</p>
+    </footer>
+
+    <script src="/js/app.js"></script>
+</body>
+</html>

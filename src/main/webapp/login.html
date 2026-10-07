@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In | Campus Placement Portal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        .auth-wrapper {
+            min-height: calc(100vh - 80px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+        .auth-card {
+            width: 100%;
+            max-width: 460px;
+            padding: 2.5rem;
+        }
+        .demo-credentials {
+            margin-top: 1.5rem;
+            padding: 1.25rem;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--glass-border);
+        }
+        .demo-btn-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-top: 0.75rem;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas-constellation"></canvas>
+
+    <header class="top-nav">
+        <a href="/" class="brand-badge">
+            <div class="brand-icon">🎓</div>
+            <div>
+                <div class="brand-title">CAMPUS CONNECT</div>
+                <div class="brand-subtitle">Placement & Internship Portal</div>
+            </div>
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <button class="theme-toggle-btn" onclick="toggleTheme()" title="Toggle Theme">
+                <span class="theme-toggle-icon">☀️</span><span>Light Mode</span>
+            </button>
+            <a href="/" class="btn btn-glass btn-sm">← Back to Home</a>
+        </div>
+    </header>
+
+    <div class="auth-wrapper">
+        <div class="glass-panel auth-card">
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <h1 style="font-family: var(--font-display); font-size: 1.85rem; font-weight: 700;">Welcome Back</h1>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 4px;">Sign in to access your recruitment portal</p>
+            </div>
+
+            <form id="loginForm">
+                <div class="form-group">
+                    <label class="form-label">University Email Address</label>
+                    <input type="email" id="email" class="form-input" placeholder="e.g. himanshu@campus.edu" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input type="password" id="password" class="form-input" placeholder="••••••••" required>
+                </div>
+
+                <button type="submit" class="btn btn-cyan" style="width: 100%; padding: 0.85rem; margin-top: 0.5rem;">
+                    Sign In to Portal →
+                </button>
+            </form>
+
+            <div style="text-align: center; margin-top: 1.5rem; font-size: 0.85rem; color: var(--text-muted);">
+                Don't have an account? <a href="/register.html" style="color: var(--accent-cyan); text-decoration: none; font-weight: 600;">Register Here</a>
+            </div>
+
+            <!-- 1-Click Demo Evaluation Credentials (Exam & Viva Helper) -->
+            <div class="demo-credentials">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span style="font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); font-weight: 600; letter-spacing: 0.05em;">
+                        ⚡ 1-Click Quick Demo Sign In
+                    </span>
+                    <span class="badge badge-shortlisted" style="font-size: 0.65rem;">Pass: pass123</span>
+                </div>
+                <div class="demo-btn-row">
+                    <button type="button" class="btn btn-glass btn-sm" onclick="quickFill('himanshu@campus.edu')">👨‍🎓 Student</button>
+                    <button type="button" class="btn btn-glass btn-sm" onclick="quickFill('recruiter@google.com')">🏢 Recruiter</button>
+                    <button type="button" class="btn btn-glass btn-sm" onclick="quickFill('admin@campus.edu')">🛡️ Admin</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/app.js"></script>
+    <script>
+        function quickFill(email) {
+            document.getElementById('email').value = email;
+            document.getElementById('password').value = 'pass123';
+            document.getElementById('loginForm').dispatchEvent(new Event('submit'));
+        }
+
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                const formData = new URLSearchParams();
+                formData.append('email', email);
+                formData.append('password', password);
+
+                const res = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: formData
+                });
+
+                const data = await res.json();
+                if (data.success) {
+                    showToast('Authentication successful! Redirecting...', 'success');
+                    setTimeout(() => {
+                        window.location.href = data.redirect;
+                    }, 500);
+                } else {
+                    showToast(data.message || 'Invalid email or password', 'error');
+                }
+            } catch (err) {
+                showToast('Login error: ' + err.message, 'error');
+            }
+        });
+    </script>
+</body>
+</html>

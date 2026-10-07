@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TPO Executive Admin & Analytics Hub | Campus Placement Portal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <canvas id="canvas-constellation"></canvas>
+
+    <header class="top-nav">
+        <a href="/" class="brand-badge">
+            <div class="brand-icon">🛡️</div>
+            <div>
+                <div class="brand-title">TPO ADMIN HUB</div>
+                <div class="brand-subtitle">Executive Intelligence • Module 4 (Krishna)</div>
+            </div>
+        </a>
+
+        <div style="display: flex; align-items: center; gap: 1rem;">
+            <button class="theme-toggle-btn" onclick="toggleTheme()" title="Toggle Theme">
+                <span class="theme-toggle-icon">☀️</span><span>Light Mode</span>
+            </button>
+            <div style="text-align: right;">
+                <div class="current-user-name" style="font-weight: 600; font-size: 0.95rem;">Dr. Krishna Sharma</div>
+                <div style="font-size: 0.75rem; color: var(--accent-cyan);">Head - Training & Placement Cell</div>
+            </div>
+            <button class="btn btn-glass btn-sm" onclick="Auth.logout()">Sign Out</button>
+        </div>
+    </header>
+
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <ul class="sidebar-menu">
+                <li><button class="sidebar-btn active" onclick="switchTab('analytics')">📊 Visual Analytics</button></li>
+                <li><button class="sidebar-btn" onclick="switchTab('verification')">🏢 Company Verification</button></li>
+                <li><button class="sidebar-btn" onclick="switchTab('moderation')">💼 Drive Moderation</button></li>
+                <li><button class="sidebar-btn" onclick="switchTab('students')">👨‍🎓 Student Directory</button></li>
+            </ul>
+        </aside>
+
+        <!-- Main Workspace -->
+        <main class="main-content">
+            <!-- Metrics Row -->
+            <div class="metrics-grid">
+                <div class="glass-panel kpi-card" style="--kpi-glow: var(--accent-cyan-dim)">
+                    <div class="kpi-title">Enrolled Students</div>
+                    <div class="kpi-value" id="kpiStudents">0</div>
+                    <div class="kpi-subtitle">Eligible 2026 Batch</div>
+                </div>
+                <div class="glass-panel kpi-card" style="--kpi-glow: var(--accent-indigo-dim)">
+                    <div class="kpi-title">Corporate Partners</div>
+                    <div class="kpi-value" id="kpiCompanies">0</div>
+                    <div class="kpi-subtitle">Registered recruiters</div>
+                </div>
+                <div class="glass-panel kpi-card" style="--kpi-glow: var(--accent-emerald-dim)">
+                    <div class="kpi-title">Overall Placement Rate</div>
+                    <div class="kpi-value" id="kpiPlacementRate">0%</div>
+                    <div class="kpi-subtitle" style="color: var(--accent-emerald);" id="kpiPlacedStudents">0 students placed</div>
+                </div>
+                <div class="glass-panel kpi-card" style="--kpi-glow: var(--accent-amber-dim)">
+                    <div class="kpi-title">Average CTC Package</div>
+                    <div class="kpi-value" id="kpiAvgPackage">₹ 0 LPA</div>
+                    <div class="kpi-subtitle">Peak: <span id="kpiPeakPackage" style="color: var(--accent-cyan); font-weight: 700;">₹ 0 LPA</span></div>
+                </div>
+            </div>
+
+            <!-- Tab 1: Visual Analytics & Charts -->
+            <section id="tab-analytics" class="tab-pane">
+                <div class="page-header">
+                    <div>
+                        <h2 class="page-title">Executive Placement Intelligence</h2>
+                        <p class="page-description">Real-time cohort insights rendered with native GPU HTML5 Canvas charts.</p>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 1.5rem; margin-bottom: 2rem;">
+                    <!-- Bar Chart Card -->
+                    <div class="glass-panel chart-box">
+                        <div class="chart-title">Branch-Wise Placement Performance (Total vs Placed)</div>
+                        <canvas id="branchChart" width="600" height="280" style="width: 100%; height: auto;"></canvas>
+                    </div>
+
+                    <!-- Donut Chart Card -->
+                    <div class="glass-panel chart-box">
+                        <div class="chart-title">Application Pipeline Funnel</div>
+                        <canvas id="pipelineChart" width="300" height="280" style="width: 100%; height: auto;"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tab 2: Company Verification -->
+            <section id="tab-verification" class="tab-pane" style="display: none;">
+                <div class="page-header">
+                    <div>
+                        <h2 class="page-title">Corporate Partner Verification Queue</h2>
+                        <p class="page-description">Authorize and vet visiting technology enterprises before drives go live.</p>
+                    </div>
+                </div>
+
+                <div class="table-container glass-panel">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Company</th>
+                                <th>Industry</th>
+                                <th>Location</th>
+                                <th>Recruiter Lead</th>
+                                <th>Website</th>
+                                <th>Verification Status</th>
+                                <th>TPO Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="companyTableBody">
+                            <!-- Populated dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Tab 3: Drive Moderation -->
+            <section id="tab-moderation" class="tab-pane" style="display: none;">
+                <div class="page-header">
+                    <div>
+                        <h2 class="page-title">Campus Drive Moderation & Policy Check</h2>
+                        <p class="page-description">Audit package thresholds, eligibility criteria, and drive status.</p>
+                    </div>
+                </div>
+
+                <div class="table-container glass-panel">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Drive Title</th>
+                                <th>Company</th>
+                                <th>Type</th>
+                                <th>Package / Stipend</th>
+                                <th>Min CGPA</th>
+                                <th>Location</th>
+                                <th>Status</th>
+                                <th>Moderation</th>
+                            </tr>
+                        </thead>
+                        <tbody id="jobsTableBody">
+                            <!-- Populated dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Tab 4: Student Directory -->
+            <section id="tab-students" class="tab-pane" style="display: none;">
+                <div class="page-header">
+                    <div>
+                        <h2 class="page-title">University Student Talent Pool</h2>
+                        <p class="page-description">Comprehensive roster with academic standing and verified skills.</p>
+                    </div>
+                </div>
+
+                <div class="table-container glass-panel">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Roll Number</th>
+                                <th>Student Name</th>
+                                <th>Department</th>
+                                <th>CGPA</th>
+                                <th>Grad Year</th>
+                                <th>Email</th>
+                                <th>Core Technical Skills</th>
+                            </tr>
+                        </thead>
+                        <tbody id="studentsTableBody">
+                            <!-- Populated dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="/js/app.js"></script>
+    <script>
+        function switchTab(tab) {
+            document.querySelectorAll('.tab-pane').forEach(el => el.style.display = 'none');
+            document.querySelectorAll('.sidebar-btn').forEach(btn => btn.classList.remove('active'));
+
+            const target = document.getElementById('tab-' + tab);
+            if (target) target.style.display = 'block';
+
+            event.target.classList.add('active');
+        }
+
+        async function initAdminDashboard() {
+            const user = await Auth.requireAuth('ADMIN');
+            if (!user) return;
+
+            loadAnalytics();
+            loadCompanies();
+            loadJobs();
+            loadStudents();
+        }
+
+        async function loadAnalytics() {
+            try {
+                const res = await fetch('/api/admin/stats');
+                const s = await res.json();
+
+                document.getElementById('kpiStudents').textContent = s.totalStudents;
+                document.getElementById('kpiCompanies').textContent = s.totalCompanies;
+                document.getElementById('kpiPlacementRate').textContent = s.placementRate + '%';
+                document.getElementById('kpiPlacedStudents').textContent = `${s.placedStudents} of ${s.totalStudents} placed`;
+                document.getElementById('kpiAvgPackage').textContent = `₹ ${s.averagePackageLpa} LPA`;
+                document.getElementById('kpiPeakPackage').textContent = `₹ ${s.highestPackageLpa} LPA`;
+
+                // Render Branch Chart
+                if (s.branchAnalytics && s.branchAnalytics.length > 0) {
+                    const labels = s.branchAnalytics.map(b => b.branch.replace('Engineering', 'Eng'));
+                    const placedVals = s.branchAnalytics.map(b => b.placed);
+                    ChartRenderer.renderBarChart('branchChart', labels, placedVals, '#00f0ff');
+                }
+
+                // Render Pipeline Donut Chart
+                ChartRenderer.renderDonutChart(
+                    'pipelineChart',
+                    ['Applied', 'Shortlisted', 'Interviewed', 'Placed'],
+                    [s.totalApplications, Math.round(s.totalApplications * 0.6), Math.round(s.totalApplications * 0.4), s.placedStudents],
+                    ['#6366f1', '#00f0ff', '#f59e0b', '#10b981']
+                );
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        async function loadCompanies() {
+            try {
+                const res = await fetch('/api/admin/companies');
+                const list = await res.json();
+                const tbody = document.getElementById('companyTableBody');
+                tbody.innerHTML = '';
+
+                list.forEach(c => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td><strong>${c.companyName}</strong></td>
+                        <td>${c.industry}</td>
+                        <td>📍 ${c.location}</td>
+                        <td>${c.recruiterName}</td>
+                        <td><a href="${c.website}" target="_blank" class="badge badge-shortlisted">Website ↗</a></td>
+                        <td><span class="badge badge-${c.verificationStatus.toLowerCase()}">${c.verificationStatus}</span></td>
+                        <td>
+                            <div style="display: flex; gap: 6px;">
+                                <button class="btn btn-cyan btn-sm" onclick="verifyCompany(${c.id}, true)">Approve</button>
+                                <button class="btn btn-danger btn-sm" onclick="verifyCompany(${c.id}, false)">Reject</button>
+                            </div>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        async function verifyCompany(cid, approve) {
+            const formData = new URLSearchParams();
+            formData.append('companyId', cid);
+            formData.append('approve', approve);
+
+            const res = await fetch('/api/admin/verify-company', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: formData
+            });
+            const data = await res.json();
+            if (data.success) {
+                showToast(data.message, 'success');
+                loadCompanies();
+                loadAnalytics();
+            }
+        }
+
+        async function loadJobs() {
+            try {
+                const res = await fetch('/api/admin/jobs');
+                const list = await res.json();
+                const tbody = document.getElementById('jobsTableBody');
+                tbody.innerHTML = '';
+
+                list.forEach(j => {
+                    const pkg = j.packageLpa > 0 ? `₹ ${j.packageLpa} LPA` : `₹ ${j.stipendPm} /mo`;
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td style="font-weight: 600;">${j.title}</td>
+                        <td>${j.companyName}</td>
+                        <td><span class="badge ${j.jobType === 'FULL_TIME' ? 'badge-verified' : 'badge-shortlisted'}">${j.jobType}</span></td>
+                        <td style="color: var(--accent-emerald); font-weight: 600;">${pkg}</td>
+                        <td>${j.minCgpa}</td>
+                        <td>📍 ${j.location}</td>
+                        <td><span class="badge badge-${j.status.toLowerCase()}">${j.status}</span></td>
+                        <td>
+                            <div style="display: flex; gap: 6px;">
+                                <button class="btn btn-cyan btn-sm" onclick="moderateJob(${j.id}, true)">Keep Active</button>
+                                <button class="btn btn-danger btn-sm" onclick="moderateJob(${j.id}, false)">Close Drive</button>
+                            </div>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        async function moderateJob(jid, approve) {
+            const formData = new URLSearchParams();
+            formData.append('jobId', jid);
+            formData.append('approve', approve);
+
+            const res = await fetch('/api/admin/moderate-job', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: formData
+            });
+            const data = await res.json();
+            if (data.success) {
+                showToast(data.message, 'info');
+                loadJobs();
+            }
+        }
+
+        async function loadStudents() {
+            try {
+                const res = await fetch('/api/admin/students');
+                const list = await res.json();
+                const tbody = document.getElementById('studentsTableBody');
+                tbody.innerHTML = '';
+
+                list.forEach(s => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td><strong>${s.rollNumber}</strong></td>
+                        <td style="font-weight: 600;">${s.name}</td>
+                        <td>${s.branch}</td>
+                        <td><strong style="color: var(--accent-cyan);">${s.cgpa}</strong></td>
+                        <td>${s.graduationYear}</td>
+                        <td>${s.email}</td>
+                        <td style="font-size: 0.8rem; color: var(--text-muted); max-width: 250px;">${s.skills}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', initAdminDashboard);
+    </script>
+</body>
+</html>
