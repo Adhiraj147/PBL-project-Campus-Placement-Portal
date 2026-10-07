@@ -62,12 +62,12 @@ public class PlacementPortalTest {
         AuthService auth = new AuthService();
 
         // 1. Valid Student Login
-        User student = auth.login("himanshu@campus.edu", "pass123");
+        User student = auth.login("himanshu@gmail.com", "pass123");
         assertTrue("Student login succeeds with correct credentials", student != null);
         assertEquals("User role is STUDENT", User.Role.STUDENT, student != null ? student.getRole() : null);
 
         // 2. Invalid Password
-        User invalid = auth.login("himanshu@campus.edu", "wrongpass");
+        User invalid = auth.login("himanshu@gmail.com", "wrongpass");
         assertTrue("Invalid password correctly rejected", invalid == null);
 
         // 3. Admin Login

@@ -50,10 +50,10 @@ public class InMemoryDB {
         User msftRecruiter = new User(3, "recruiter@microsoft.com", defaultPassHash, User.Role.RECRUITER, "Elena Rostova (Microsoft Recruiter)", "+91 98222 33445", User.Status.ACTIVE);
         User amznRecruiter = new User(4, "recruiter@amazon.com", defaultPassHash, User.Role.RECRUITER, "Rajesh Iyer (AWS Recruiter)", "+91 98333 44556", User.Status.ACTIVE);
 
-        User himanshu = new User(5, "himanshu@campus.edu", defaultPassHash, User.Role.STUDENT, "Himanshu Yadav", "+91 98444 55667", User.Status.ACTIVE);
-        User shlok = new User(6, "shlok@campus.edu", defaultPassHash, User.Role.STUDENT, "Shlok Joshi", "+91 98555 66778", User.Status.ACTIVE);
-        User adhiraj = new User(7, "adhiraj@campus.edu", defaultPassHash, User.Role.STUDENT, "Adhiraj Rathore", "+91 98666 77889", User.Status.ACTIVE);
-        User ananya = new User(8, "ananya@campus.edu", defaultPassHash, User.Role.STUDENT, "Ananya Gupta", "+91 98777 88990", User.Status.ACTIVE);
+        User himanshu = new User(5, "himanshu@gmail.com", defaultPassHash, User.Role.STUDENT, "Himanshu Yadav", "+91 98444 55667", User.Status.ACTIVE);
+        User shlok = new User(6, "shlok@gmail.com", defaultPassHash, User.Role.STUDENT, "Shlok Joshi", "+91 98555 66778", User.Status.ACTIVE);
+        User adhiraj = new User(7, "adhiraj@gmail.com", defaultPassHash, User.Role.STUDENT, "Adhiraj Rathore", "+91 98666 77889", User.Status.ACTIVE);
+        User ananya = new User(8, "ananya@gmail.com", defaultPassHash, User.Role.STUDENT, "Ananya Gupta", "+91 98777 88990", User.Status.ACTIVE);
 
         users.put(admin.getId(), admin);
         users.put(googleRecruiter.getId(), googleRecruiter);
@@ -69,10 +69,10 @@ public class InMemoryDB {
         sp1.setResumeUrl("https://example.com/resumes/himanshu-cv.pdf");
         sp1.setSkills("Java 24, Spring Boot, MySQL, Docker, Kubernetes, React, Distributed Systems");
         sp1.setBio("Full-stack software architect specializing in database persistence, concurrent servlets, and cloud infrastructure.");
-        sp1.setLinkedinUrl("https://linkedin.com/in/himanshu-yadav");
-        sp1.setGithubUrl("https://github.com/himanshu-yadav");
+        sp1.setLinkedinUrl("https://www.linkedin.com/in/himanshu-yadav-112ba6376");
+        sp1.setGithubUrl("https://github.com/XXHimanshuXX");
         sp1.setStudentName("Himanshu Yadav");
-        sp1.setStudentEmail("himanshu@campus.edu");
+        sp1.setStudentEmail("himanshu@gmail.com");
         sp1.setPhone("+91 98444 55667");
 
         StudentProfile sp2 = new StudentProfile(2, 6, "22CS102", "Computer Science & Engineering", 8.85, 2026);
@@ -82,7 +82,7 @@ public class InMemoryDB {
         sp2.setLinkedinUrl("https://linkedin.com/in/shlok-joshi");
         sp2.setGithubUrl("https://github.com/shlok-joshi");
         sp2.setStudentName("Shlok Joshi");
-        sp2.setStudentEmail("shlok@campus.edu");
+        sp2.setStudentEmail("shlok@gmail.com");
         sp2.setPhone("+91 98555 66778");
 
         StudentProfile sp3 = new StudentProfile(3, 7, "22IT103", "Information Technology", 8.60, 2026);
@@ -92,7 +92,7 @@ public class InMemoryDB {
         sp3.setLinkedinUrl("https://linkedin.com/in/adhiraj-rathore");
         sp3.setGithubUrl("https://github.com/adhiraj-rathore");
         sp3.setStudentName("Adhiraj Rathore");
-        sp3.setStudentEmail("adhiraj@campus.edu");
+        sp3.setStudentEmail("adhiraj@gmail.com");
         sp3.setPhone("+91 98666 77889");
 
         StudentProfile sp4 = new StudentProfile(4, 8, "22EC104", "Electronics & Communication", 9.10, 2026);
@@ -102,7 +102,7 @@ public class InMemoryDB {
         sp4.setLinkedinUrl("https://linkedin.com/in/ananya-gupta");
         sp4.setGithubUrl("https://github.com/ananya-gupta");
         sp4.setStudentName("Ananya Gupta");
-        sp4.setStudentEmail("ananya@campus.edu");
+        sp4.setStudentEmail("ananya@gmail.com");
         sp4.setPhone("+91 98777 88990");
 
         students.put(sp1.getId(), sp1);
@@ -183,7 +183,7 @@ public class InMemoryDB {
         app1.setJobType("FULL_TIME");
         app1.setPackageLpa(28.50);
         app1.setStudentName("Himanshu Yadav");
-        app1.setStudentEmail("himanshu@campus.edu");
+        app1.setStudentEmail("himanshu@gmail.com");
         app1.setRollNumber("22CS101");
         app1.setBranch("Computer Science & Engineering");
         app1.setCgpa(9.40);
@@ -196,7 +196,7 @@ public class InMemoryDB {
         app2.setJobType("INTERNSHIP");
         app2.setStipendPm(110000.0);
         app2.setStudentName("Himanshu Yadav");
-        app2.setStudentEmail("himanshu@campus.edu");
+        app2.setStudentEmail("himanshu@gmail.com");
         app2.setRollNumber("22CS101");
         app2.setBranch("Computer Science & Engineering");
         app2.setCgpa(9.40);
@@ -209,7 +209,7 @@ public class InMemoryDB {
         app3.setJobType("FULL_TIME");
         app3.setPackageLpa(28.50);
         app3.setStudentName("Shlok Joshi");
-        app3.setStudentEmail("shlok@campus.edu");
+        app3.setStudentEmail("shlok@gmail.com");
         app3.setRollNumber("22CS102");
         app3.setBranch("Computer Science & Engineering");
         app3.setCgpa(8.85);
@@ -222,7 +222,7 @@ public class InMemoryDB {
         app4.setJobType("FULL_TIME");
         app4.setPackageLpa(25.00);
         app4.setStudentName("Adhiraj Rathore");
-        app4.setStudentEmail("adhiraj@campus.edu");
+        app4.setStudentEmail("adhiraj@gmail.com");
         app4.setRollNumber("22IT103");
         app4.setBranch("Information Technology");
         app4.setCgpa(8.60);
@@ -235,7 +235,7 @@ public class InMemoryDB {
         app5.setJobType("FULL_TIME");
         app5.setPackageLpa(24.00);
         app5.setStudentName("Ananya Gupta");
-        app5.setStudentEmail("ananya@campus.edu");
+        app5.setStudentEmail("ananya@gmail.com");
         app5.setRollNumber("22EC104");
         app5.setBranch("Electronics & Communication");
         app5.setCgpa(9.10);
@@ -252,7 +252,7 @@ public class InMemoryDB {
         Interview i1 = new Interview(1, 1, "Technical Architecture Round 1",
                 new Timestamp(now + (2L * 24 * 3600 * 1000)), "https://meet.google.com/xyz-tech1", Interview.Mode.ONLINE, Interview.Status.SCHEDULED);
         i1.setStudentName("Himanshu Yadav");
-        i1.setStudentEmail("himanshu@campus.edu");
+        i1.setStudentEmail("himanshu@gmail.com");
         i1.setJobTitle("Software Development Engineer - SWE 2026");
         i1.setCompanyName("Google India");
         i1.setFeedback("Deep evaluation of concurrency models, memory leak prevention, and query tuning.");
@@ -260,7 +260,7 @@ public class InMemoryDB {
         Interview i2 = new Interview(2, 3, "Algorithms & Problem Solving",
                 new Timestamp(now + (3L * 24 * 3600 * 1000)), "https://meet.google.com/abc-code", Interview.Mode.ONLINE, Interview.Status.SCHEDULED);
         i2.setStudentName("Shlok Joshi");
-        i2.setStudentEmail("shlok@campus.edu");
+        i2.setStudentEmail("shlok@gmail.com");
         i2.setJobTitle("Software Development Engineer - SWE 2026");
         i2.setCompanyName("Google India");
         i2.setFeedback("Problem solving round with live code collaboration.");

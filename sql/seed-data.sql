@@ -15,16 +15,16 @@ INSERT INTO users (id, email, password_hash, role, full_name, phone, status) VAL
 (2, 'recruiter@google.com', 'b9b3297a7e8412674e76c729eec011030e460be0ad23d70f90e5f0d9841c60b2', 'RECRUITER', 'Saurabh Verma (Google Talent Acquisition)', '+91 98111 22334', 'ACTIVE'),
 (3, 'recruiter@microsoft.com', 'b9b3297a7e8412674e76c729eec011030e460be0ad23d70f90e5f0d9841c60b2', 'RECRUITER', 'Elena Rostova (Microsoft University Relations)', '+91 98222 33445', 'ACTIVE'),
 (4, 'recruiter@amazon.com', 'b9b3297a7e8412674e76c729eec011030e460be0ad23d70f90e5f0d9841c60b2', 'RECRUITER', 'Rajesh Iyer (Amazon Campus Recruiter)', '+91 98333 44556', 'ACTIVE'),
-(5, 'himanshu@campus.edu', 'b9b3297a7e8412674e76c729eec011030e460be0ad23d70f90e5f0d9841c60b2', 'STUDENT', 'Himanshu Yadav', '+91 98444 55667', 'ACTIVE'),
-(6, 'shlok@campus.edu', 'b9b3297a7e8412674e76c729eec011030e460be0ad23d70f90e5f0d9841c60b2', 'STUDENT', 'Shlok Joshi', '+91 98555 66778', 'ACTIVE'),
-(7, 'adhiraj@campus.edu', 'b9b3297a7e8412674e76c729eec011030e460be0ad23d70f90e5f0d9841c60b2', 'STUDENT', 'Adhiraj Rathore', '+91 98666 77889', 'ACTIVE'),
-(8, 'ananya@campus.edu', 'b9b3297a7e8412674e76c729eec011030e460be0ad23d70f90e5f0d9841c60b2', 'STUDENT', 'Ananya Gupta', '+91 98777 88990', 'ACTIVE');
+(5, 'himanshu@gmail.com', 'b9b3297a7e8412674e76c729eec011030e460be0ad23d70f90e5f0d9841c60b2', 'STUDENT', 'Himanshu Yadav', '+91 98444 55667', 'ACTIVE'),
+(6, 'shlok@gmail.com', 'b9b3297a7e8412674e76c729eec011030e460be0ad23d70f90e5f0d9841c60b2', 'STUDENT', 'Shlok Joshi', '+91 98555 66778', 'ACTIVE'),
+(7, 'adhiraj@gmail.com', 'b9b3297a7e8412674e76c729eec011030e460be0ad23d70f90e5f0d9841c60b2', 'STUDENT', 'Adhiraj Rathore', '+91 98666 77889', 'ACTIVE'),
+(8, 'ananya@gmail.com', 'b9b3297a7e8412674e76c729eec011030e460be0ad23d70f90e5f0d9841c60b2', 'STUDENT', 'Ananya Gupta', '+91 98777 88990', 'ACTIVE');
 
 -- -------------------------------------------------------------------------
 -- 2. SEED STUDENT PROFILES
 -- -------------------------------------------------------------------------
 INSERT INTO student_profiles (id, user_id, roll_number, branch, cgpa, graduation_year, resume_url, skills, bio, linkedin_url, github_url) VALUES
-(1, 5, '22CS101', 'Computer Science & Engineering', 9.40, 2026, 'https://drive.google.com/himanshu-resume.pdf', 'Java, Spring Boot, MySQL, Docker, Kubernetes, React', 'Full-stack software engineer passionate about high-concurrency systems and database performance optimization.', 'https://linkedin.com/in/himanshu-yadav', 'https://github.com/himanshu-yadav'),
+(1, 5, '22CS101', 'Computer Science & Engineering', 9.40, 2026, 'https://drive.google.com/himanshu-resume.pdf', 'Java, Spring Boot, MySQL, Docker, Kubernetes, React', 'Full-stack software engineer passionate about high-concurrency systems and database performance optimization.', 'https://www.linkedin.com/in/himanshu-yadav-112ba6376', 'https://github.com/XXHimanshuXX'),
 (2, 6, '22CS102', 'Computer Science & Engineering', 8.85, 2026, 'https://drive.google.com/shlok-resume.pdf', 'Java, Android, Flutter, Microservices, Node.js', 'Mobile and distributed systems enthusiast with 3 production apps shipped.', 'https://linkedin.com/in/shlok-joshi', 'https://github.com/shlok-joshi'),
 (3, 7, '22IT103', 'Information Technology', 8.60, 2026, 'https://drive.google.com/adhiraj-resume.pdf', 'Java, Python, Cybersecurity, OAuth2, Linux Administration', 'Security analyst focusing on RBAC systems and identity governance.', 'https://linkedin.com/in/adhiraj-rathore', 'https://github.com/adhiraj-rathore'),
 (4, 8, '22EC104', 'Electronics & Communication', 9.10, 2026, 'https://drive.google.com/ananya-resume.pdf', 'Embedded C, Python, Machine Learning, IoT, Java', 'Hardware-software co-designer and AI on edge researcher.', 'https://linkedin.com/in/ananya-gupta', 'https://github.com/ananya-gupta');

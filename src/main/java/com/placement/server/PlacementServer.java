@@ -77,7 +77,7 @@ public class PlacementServer {
         System.out.println("-------------------------------------------------------------------------------");
         System.out.println("   🚀 Portal Live at: http://localhost:" + port + "/");
         System.out.println("   🔑 Demo Credentials:");
-        System.out.println("      - Student:   himanshu@campus.edu  / pass123");
+        System.out.println("      - Student:   himanshu@gmail.com   / pass123");
         System.out.println("      - Recruiter: recruiter@google.com / pass123");
         System.out.println("      - Admin:     admin@campus.edu     / pass123");
         System.out.println("===============================================================================");

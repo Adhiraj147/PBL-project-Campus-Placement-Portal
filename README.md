@@ -66,9 +66,9 @@ For quick evaluation and viva demonstrations, 1-click test credentials are built
 
 | Role | University Email | Password | Preloaded Test Profile |
 | :--- | :--- | :--- | :--- |
-| **Student** | `himanshu@campus.edu` | `pass123` | Himanshu Yadav (CSE, 9.40 CGPA, Shortlisted for Google SWE) |
-| **Student** | `shlok@campus.edu` | `pass123` | Shlok Joshi (CSE, 8.85 CGPA) |
-| **Student** | `adhiraj@campus.edu` | `pass123` | Adhiraj Rathore (IT, 8.60 CGPA) |
+| **Student** | `himanshu@gmail.com` | `pass123` | Himanshu Yadav (CSE, 9.40 CGPA, Shortlisted for Google SWE) |
+| **Student** | `shlok@gmail.com` | `pass123` | Shlok Joshi (CSE, 8.85 CGPA) |
+| **Student** | `adhiraj@gmail.com` | `pass123` | Adhiraj Rathore (IT, 8.60 CGPA) |
 | **Recruiter** | `recruiter@google.com` | `pass123` | Saurabh Verma (Google India TA Lead) |
 | **Recruiter** | `recruiter@microsoft.com` | `pass123` | Elena Rostova (Microsoft University Relations) |
 | **Recruiter** | `recruiter@amazon.com` | `pass123` | Rajesh Iyer (AWS Campus Lead) |
