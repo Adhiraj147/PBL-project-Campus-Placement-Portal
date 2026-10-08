@@ -1,4 +1,4 @@
- CAMPUS PLACEMENT AND INTERNSHIP PORTAL – Objective / Progress and Work Developed
+ CAMPUS PLACEMENT AND INTERNSHIP PORTAL – Objective / Progress and Work Developed.
 
 ## Week 1 – Student Portal Foundation
 
