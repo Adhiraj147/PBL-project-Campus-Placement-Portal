@@ -1,1 +1,1 @@
-# Java-PBL-project
+# Java-PBL-project - CAMPUS PLACEMENT AND INTERNSHIP PORTAL
