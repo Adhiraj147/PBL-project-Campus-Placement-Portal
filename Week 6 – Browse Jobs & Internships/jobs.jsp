@@ -41,6 +41,14 @@
             color: #666;
         }
 
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 12px 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+
         .job-card {
             background: white;
             padding: 25px;
@@ -80,6 +88,20 @@
             font-weight: bold;
         }
 
+        .apply-button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 11px 20px;
+            background: #333;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+        }
+
+        .apply-button:hover {
+            background: #555;
+        }
+
         .empty-state {
             background: white;
             text-align: center;
@@ -101,6 +123,9 @@
 
 <div class="jobs-container">
 
+
+    <!-- Page Header -->
+
     <div class="page-header">
 
         <h1>Jobs & Internships</h1>
@@ -112,6 +137,21 @@
     </div>
 
 
+    <!-- Application Success Message -->
+
+    <c:if test="${param.applied == 'true'}">
+
+        <div class="success-message">
+
+            Your application has been submitted successfully.
+
+        </div>
+
+    </c:if>
+
+
+    <!-- Jobs List -->
+
     <c:choose>
 
         <c:when test="${not empty jobs}">
@@ -120,13 +160,22 @@
 
                 <div class="job-card">
 
+
+                    <!-- Job Title -->
+
                     <h2>
                         ${job.title}
                     </h2>
 
+
+                    <!-- Company -->
+
                     <div class="company">
                         ${job.company}
                     </div>
+
+
+                    <!-- Location and Job Type -->
 
                     <div class="job-info">
 
@@ -140,6 +189,9 @@
 
                     </div>
 
+
+                    <!-- Job Description -->
+
                     <div class="description">
 
                         <strong>Description:</strong>
@@ -150,6 +202,9 @@
 
                     </div>
 
+
+                    <!-- Required Skills -->
+
                     <div class="skills">
 
                         <strong>Required Skills:</strong>
@@ -158,19 +213,38 @@
 
                     </div>
 
+
+                    <!-- Minimum CGPA -->
+
                     <div>
 
-                        Minimum CGPA:
+                        <strong>Minimum CGPA:</strong>
+
                         ${job.minimumCgpa}
 
                     </div>
 
+
+                    <!-- Application Deadline -->
+
                     <div class="deadline">
 
                         Application Deadline:
+
                         ${job.deadline}
 
                     </div>
+
+
+                    <!-- Apply Button -->
+
+                    <a class="apply-button"
+                       href="${pageContext.request.contextPath}/student/apply-job?jobId=${job.jobId}">
+
+                        Apply Now
+
+                    </a>
+
 
                 </div>
 
@@ -178,6 +252,8 @@
 
         </c:when>
 
+
+        <!-- No Jobs -->
 
         <c:otherwise>
 
@@ -196,12 +272,15 @@
     </c:choose>
 
 
+    <!-- Back to Dashboard -->
+
     <a class="back-link"
        href="${pageContext.request.contextPath}/student/dashboard">
 
         Back to Dashboard
 
     </a>
+
 
 </div>
 
