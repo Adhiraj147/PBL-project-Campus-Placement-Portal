@@ -2,224 +2,250 @@
     contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
+<%@ taglib prefix="c"
+    uri="http://java.sun.com/jsp/jstl/core"%>
+
 <!DOCTYPE html>
-
-<html lang="en">
-
+<html>
 <head>
-
     <meta charset="UTF-8">
-
     <title>Eligibility Check</title>
 
     <style>
-
         body {
-            margin: 0;
             font-family: Arial, sans-serif;
-            background: #f5f7fa;
+            background: #f4f6f8;
+            margin: 0;
+            padding: 0;
         }
 
-        .eligibility-container {
+        .container {
             width: 90%;
             max-width: 800px;
-            margin: 50px auto;
+            margin: 40px auto;
         }
 
-        .eligibility-card {
+        .card {
             background: white;
             padding: 30px;
             border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
         }
 
         h1 {
             margin-top: 0;
+            color: #333;
         }
 
-        .requirement {
+        h2 {
+            color: #444;
+            margin-bottom: 20px;
+        }
+
+        .check {
             padding: 15px;
-            margin-bottom: 12px;
+            margin: 12px 0;
             border-radius: 6px;
-            background: #f5f5f5;
         }
 
         .eligible {
-            background: #d4edda;
-            color: #155724;
+            background: #e8f5e9;
+            border: 1px solid #4caf50;
+            color: #2e7d32;
         }
 
         .not-eligible {
-            background: #f8d7da;
-            color: #721c24;
+            background: #ffebee;
+            border: 1px solid #f44336;
+            color: #c62828;
         }
 
         .result {
             margin-top: 25px;
-            padding: 18px;
+            padding: 20px;
+            text-align: center;
             border-radius: 8px;
-            font-weight: bold;
+        }
+
+        .result h2 {
+            margin-top: 0;
         }
 
         .apply-button {
             display: inline-block;
-            margin-top: 20px;
-            padding: 11px 20px;
-            background: #333;
+            margin-top: 15px;
+            padding: 12px 22px;
+            background: #1976d2;
             color: white;
             text-decoration: none;
-            border-radius: 6px;
+            border-radius: 5px;
         }
 
-        .back-link {
+        .apply-button:hover {
+            background: #1565c0;
+        }
+
+        .back-button {
             display: inline-block;
-            margin-top: 20px;
-            margin-left: 10px;
+            margin-top: 15px;
+            padding: 10px 18px;
+            background: #757575;
+            color: white;
             text-decoration: none;
+            border-radius: 5px;
         }
 
-    </style>
+        .back-button:hover {
+            background: #616161;
+        }
 
+        .error {
+            background: #ffebee;
+            color: #c62828;
+            padding: 15px;
+            border-radius: 6px;
+            border: 1px solid #f44336;
+        }
+    </style>
 </head>
 
 <body>
 
-<div class="eligibility-container">
+<div class="container">
 
-    <div class="eligibility-card">
+    <div class="card">
 
-        <h1>Eligibility Check</h1>
-
-        <p>
-            Your eligibility has been checked against the
-            requirements of this opportunity.
-        </p>
-
-
-        <!-- CGPA Check -->
-
-        <div class="requirement">
-
-            <strong>CGPA Requirement</strong>
-
-            <p>
-                Your CGPA:
-                ${eligibility.studentCgpa}
-            </p>
-
-            <p>
-                Required CGPA:
-                ${eligibility.requiredCgpa}
-            </p>
-
-            <c:choose>
-
-                <c:when test="${eligibility.cgpaEligible}">
-
-                    <div class="eligible">
-                        ✓ CGPA requirement satisfied
-                    </div>
-
-                </c:when>
-
-                <c:otherwise>
-
-                    <div class="not-eligible">
-                        ✗ CGPA requirement not satisfied
-                    </div>
-
-                </c:otherwise>
-
-            </c:choose>
-
-        </div>
-
-
-        <!-- Skills Check -->
-
-        <div class="requirement">
-
-            <strong>Skills Requirement</strong>
-
-            <p>
-                Required Skills:
-                ${eligibility.requiredSkills}
-            </p>
-
-            <p>
-                Your Skills:
-                ${eligibility.studentSkills}
-            </p>
-
-            <c:choose>
-
-                <c:when test="${eligibility.skillsEligible}">
-
-                    <div class="eligible">
-                        ✓ Required skills satisfied
-                    </div>
-
-                </c:when>
-
-                <c:otherwise>
-
-                    <div class="not-eligible">
-                        ✗ Required skills not satisfied
-                    </div>
-
-                </c:otherwise>
-
-            </c:choose>
-
-        </div>
-
-
-        <!-- Final Result -->
+        <h1>Job Eligibility Check</h1>
 
         <c:choose>
 
-            <c:when test="${eligibility.eligible}">
+            <!-- Error Message -->
+            <c:when test="${not empty errorMessage}">
 
-                <div class="result eligible">
-
-                    You are eligible for this opportunity.
-
+                <div class="error">
+                    ${errorMessage}
                 </div>
 
-                <a class="apply-button"
-                   href="${pageContext.request.contextPath}/student/apply-job?jobId=${eligibility.jobId}">
-
-                    Continue to Application
-
+                <a class="back-button"
+                   href="${pageContext.request.contextPath}/student/jobs">
+                    Back to Jobs
                 </a>
 
             </c:when>
 
-
+            <!-- Eligibility Result -->
             <c:otherwise>
 
-                <div class="result not-eligible">
+                <h2>Eligibility Requirements</h2>
 
-                    You are not eligible for this opportunity.
+                <!-- CGPA Check -->
+                <c:choose>
 
-                </div>
+                    <c:when test="${eligibility.cgpaEligible}">
+                        <div class="check eligible">
+                            <strong>CGPA Requirement: Eligible</strong>
+                            <br>
+                            Your CGPA:
+                            ${eligibility.studentCgpa}
+                            <br>
+                            Required CGPA:
+                            ${eligibility.requiredCgpa}
+                        </div>
+                    </c:when>
+
+                    <c:otherwise>
+                        <div class="check not-eligible">
+                            <strong>CGPA Requirement: Not Eligible</strong>
+                            <br>
+                            Your CGPA:
+                            ${eligibility.studentCgpa}
+                            <br>
+                            Required CGPA:
+                            ${eligibility.requiredCgpa}
+                        </div>
+                    </c:otherwise>
+
+                </c:choose>
+
+
+                <!-- Skills Check -->
+                <c:choose>
+
+                    <c:when test="${eligibility.skillsEligible}">
+                        <div class="check eligible">
+                            <strong>Skills Requirement: Eligible</strong>
+                            <br>
+                            Required Skills:
+                            ${eligibility.requiredSkills}
+                        </div>
+                    </c:when>
+
+                    <c:otherwise>
+                        <div class="check not-eligible">
+                            <strong>Skills Requirement: Not Eligible</strong>
+                            <br>
+                            Required Skills:
+                            ${eligibility.requiredSkills}
+                        </div>
+                    </c:otherwise>
+
+                </c:choose>
+
+
+                <!-- Final Eligibility -->
+                <c:choose>
+
+                    <c:when test="${eligibility.eligible}">
+
+                        <div class="result eligible">
+
+                            <h2>You are Eligible!</h2>
+
+                            <p>
+                                You meet the required CGPA and skill
+                                requirements for this opportunity.
+                            </p>
+
+                            <a class="apply-button"
+                               href="${pageContext.request.contextPath}/student/apply-job?jobId=${eligibility.jobId}">
+                                Continue to Application
+                            </a>
+
+                        </div>
+
+                    </c:when>
+
+                    <c:otherwise>
+
+                        <div class="result not-eligible">
+
+                            <h2>You are Not Eligible</h2>
+
+                            <p>
+                                You do not currently meet all the
+                                requirements for this opportunity.
+                            </p>
+
+                        </div>
+
+                    </c:otherwise>
+
+                </c:choose>
+
+
+                <a class="back-button"
+                   href="${pageContext.request.contextPath}/student/jobs">
+                    Back to Jobs
+                </a>
 
             </c:otherwise>
 
         </c:choose>
-
-
-        <a class="back-link"
-           href="${pageContext.request.contextPath}/student/jobs">
-
-            Back to Jobs
-
-        </a>
 
     </div>
 
 </div>
 
 </body>
-
 </html>
