@@ -1,0 +1,104 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background: #f5f7fa;
+}
+
+.certification-container {
+    width: 90%;
+    max-width: 1000px;
+    margin: 40px auto;
+}
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.page-header h1 {
+    margin-bottom: 8px;
+}
+
+.page-header p {
+    color: #666;
+}
+
+.back-button {
+    text-decoration: none;
+    padding: 10px 16px;
+    border-radius: 6px;
+    background: #eeeeee;
+    color: #333;
+}
+
+.certification-form,
+.certification-list {
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    margin-bottom: 25px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.certification-form h2,
+.certification-list h2 {
+    margin-top: 0;
+}
+
+.form-group {
+    margin-bottom: 18px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 7px;
+    font-weight: bold;
+}
+
+.form-group input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 11px;
+    border: 1px solid #cccccc;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.certification-form button {
+    border: none;
+    padding: 11px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    background: #333333;
+    color: white;
+}
+
+.certification-card {
+    border: 1px solid #dddddd;
+    border-radius: 8px;
+    padding: 18px;
+    margin-bottom: 15px;
+}
+
+.certification-card h3 {
+    margin-top: 0;
+    margin-bottom: 6px;
+}
+
+.organization {
+    font-weight: bold;
+}
+
+.certification-card a {
+    text-decoration: none;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 30px;
+    border: 1px dashed #cccccc;
+    border-radius: 8px;
+}
