@@ -1,0 +1,21 @@
+# Target and build artifacts
+target/
+bin/
+*.class
+
+# IDE and Editor configurations
+.idea/
+*.iml
+.vscode/
+.settings/
+.project
+.classpath
+
+# Local extraction directory
+real_team_project/
+*.zip
+*.log
+
+# OS generated files
+.DS_Store
+Thumbs.db
