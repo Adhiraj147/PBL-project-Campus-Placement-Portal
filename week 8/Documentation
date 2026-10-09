@@ -1,0 +1,248 @@
+# Week 8 - Edit and Delete Internship Postings
+
+## Project
+
+Campus Placement and Internship Portal
+
+## Module
+
+Recruiter & Company Portal
+
+## Developer
+
+Saurabh
+
+## Branch
+
+feature/saurabh
+
+---
+
+## Objective
+
+This feature allows recruiters to manage internship postings
+that they have already created.
+
+Recruiters can:
+
+- View their internship postings
+- Edit internship information
+- Save updated internship information
+- Delete internship postings
+- See the status of each internship
+
+---
+
+## Existing Architecture
+
+The project stores jobs and internships in the same
+opportunities database table.
+
+The type field distinguishes the two:
+
+- JOB
+- INTERNSHIP
+
+The implementation reuses the existing Opportunity model,
+OpportunityDAO interface, and OpportunityDAOImpl class.
+
+---
+
+## Files
+
+### 1. OpportunityDAO.java
+
+Adds DAO methods for updating and deleting internships
+owned by a particular company.
+
+### 2. OpportunityDAOImpl.java
+
+Implements the new operations using parameterized SQL
+queries.
+
+### 3. InternshipManagementServlet.java
+
+Handles:
+
+- Recruiter session validation
+- Company lookup
+- Loading internship records
+- Validating form input
+- Updating internship information
+- Deleting internships
+
+### 4. manage-internships.jsp
+
+Displays the recruiter's internship postings and provides
+forms for editing and deleting them.
+
+---
+
+## Edit Workflow
+
+Recruiter Login
+      |
+      v
+Manage Internships
+      |
+      v
+Edit Internship Fields
+      |
+      v
+Submit Changes
+      |
+      v
+Validate Input
+      |
+      v
+Verify Company Ownership
+      |
+      v
+Update Database
+      |
+      v
+Show Success Message
+
+---
+
+## Delete Workflow
+
+Recruiter Login
+      |
+      v
+Manage Internships
+      |
+      v
+Select Delete Internship
+      |
+      v
+Confirm Deletion
+      |
+      v
+Verify Company Ownership
+      |
+      v
+Delete Database Record
+      |
+      v
+Refresh Internship List
+
+---
+
+## Security
+
+The servlet retrieves the logged-in User from the session.
+
+It then obtains the corresponding company using CompanyDAO.
+
+Updates and deletions are restricted by:
+
+- Opportunity ID
+- Company ID
+- Internship type
+
+This prevents a recruiter from modifying another company's
+internship through a forged request.
+
+---
+
+## Validation
+
+The application validates:
+
+- Internship ID
+- Internship title
+- Description
+- Location
+- Work mode
+- Stipend
+- Minimum CGPA
+- Eligible branches
+- Graduation year
+- Required skills
+- Application deadline
+
+The minimum CGPA must be between 0 and 10.
+
+---
+
+## Database Operations
+
+Editing uses an UPDATE query restricted to the selected
+internship and its owning company.
+
+Deleting uses a DELETE query restricted to the selected
+internship and its owning company.
+
+Parameterized SQL is used for user-supplied values.
+
+If a foreign-key constraint prevents deletion because
+applications reference the internship, the deletion must
+be handled without corrupting application records.
+
+---
+
+## Test Cases
+
+### Test 1 - Display Internships
+
+Open the internship management page.
+
+Expected:
+Only the logged-in company's internships are displayed.
+
+### Test 2 - Edit Internship
+
+Change the title, description, or other details and save.
+
+Expected:
+The database contains the updated values.
+
+### Test 3 - Delete Internship
+
+Select Delete Internship and confirm.
+
+Expected:
+The selected internship is removed if database constraints
+permit deletion.
+
+### Test 4 - Invalid Internship ID
+
+Submit an invalid ID.
+
+Expected:
+The request is rejected.
+
+### Test 5 - Another Company's Internship
+
+Attempt to update an internship belonging to another company.
+
+Expected:
+The operation is rejected.
+
+### Test 6 - Job ID
+
+Attempt to use this workflow on a job posting.
+
+Expected:
+The operation is rejected because the record is not
+an internship.
+
+### Test 7 - Invalid CGPA
+
+Enter a CGPA outside the permitted range.
+
+Expected:
+The request is rejected.
+
+---
+
+## Expected Result
+
+Recruiters can edit and delete their own internship postings.
+
+The implementation reuses the project's existing model,
+DAO, database connection, company profile, and session.
+
+This completes the internship management stage of the
+Recruiter & Company Portal.
