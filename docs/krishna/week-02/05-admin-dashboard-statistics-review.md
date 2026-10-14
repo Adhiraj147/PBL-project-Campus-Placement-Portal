@@ -101,3 +101,5 @@ Any identified discrepancies should be recorded for correction and retesting.
 Reliable dashboard statistics are important for administrative decisions.
 
 A systematic comparison between database results and dashboard values will help improve the accuracy and reliability of the Admin & Analytics module.
+
+Commit message -docs: document admin dashboard statistics review
