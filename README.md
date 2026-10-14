@@ -359,6 +359,6 @@ This project was developed for educational and academic project purposes (B.Tech
 ---
 
 <div align="center">
-  <b>Built with ❤️ by Adhiraj Singh & Team</b><br>
+  <b>Built with by Adhiraj Singh & Team</b><br>
   <sub>Contributions and feature suggestions are welcome!</sub>
 </div>
