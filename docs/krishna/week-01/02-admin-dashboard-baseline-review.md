@@ -108,6 +108,7 @@ The following areas will be reviewed during subsequent weeks:
 
 The implementation status of these features must be verified before they are considered complete.
 
+Commit Mesage -docs: add baseline review for admin dashboard
 ## 7. Conclusion
 
 This review documents the existing dashboard architecture and its primary statistics.
