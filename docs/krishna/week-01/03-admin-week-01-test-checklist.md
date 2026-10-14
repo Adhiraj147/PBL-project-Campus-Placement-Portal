@@ -82,6 +82,8 @@ The following tasks may be taken up in subsequent weeks:
 
 ## 9. Conclusion
 
+Commit message - docs: add week 1 admin test checklist
+
 This checklist provides a structured approach to verifying the existing administrator dashboard.
 
 The results will help identify problems and guide the development of additional administrative features.
