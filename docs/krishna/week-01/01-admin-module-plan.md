@@ -80,3 +80,6 @@ The Week 1 deliverables are:
 By the end of Week 1, the existing administrator module should be understood and its initial development requirements documented.
 
 All implementation and testing activities will be recorded as they are completed.
+
+Commit message-
+docs: add admin module plan for week 1
