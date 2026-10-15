@@ -1,0 +1,146 @@
+# Week 9 - Applicant Management and Resume Viewing
+
+## Project
+
+Campus Placement and Internship Portal
+
+## Module
+
+Recruiter & Company Portal
+
+## Developer
+
+Saurabh
+
+## Branch
+
+feature/saurabh
+
+---
+
+## Objective
+
+The objective of this feature is to allow recruiters to
+view applications submitted for their company's job and
+internship postings.
+
+The feature establishes the applicant-management workflow
+for later shortlisting, rejection, status updates and
+interview scheduling.
+
+---
+
+## Features
+
+- View applications for company opportunities
+- View application IDs and statuses
+- Associate applications with opportunities
+- Restrict access to the recruiter's company
+- Prepare the applicant list for resume viewing
+- Display an empty state when no applications exist
+
+Resume viewing requires integration with the project's
+actual resume storage field or URL.
+
+---
+
+## Workflow
+
+Recruiter Login
+       |
+       v
+Recruiter Dashboard
+       |
+       v
+Applicant Management
+       |
+       v
+Verify Company
+       |
+       v
+Load Applications
+       |
+       v
+Display Applicant List
+
+---
+
+## Files
+
+### RecruiterApplicationDAO.java
+
+Defines database operations for retrieving applications.
+
+### RecruiterApplicationDAOImpl.java
+
+Retrieves applications associated with company opportunities.
+
+### RecruiterApplicationServlet.java
+
+Validates the session, identifies the company and loads
+the application list.
+
+### applicants.jsp
+
+Displays application details and status.
+
+---
+
+## Security
+
+The recruiter must be authenticated.
+
+Applications must be restricted to opportunities owned
+by the recruiter's company.
+
+Resume access must also verify ownership before displaying
+or downloading a file.
+
+---
+
+## Testing
+
+### Test 1 - Authentication
+
+Open the applicant page without logging in.
+
+Expected:
+Redirect to the login page.
+
+### Test 2 - Applications Exist
+
+Log in as a recruiter whose company has applications.
+
+Expected:
+Applications associated with that company's opportunities
+are displayed.
+
+### Test 3 - No Applications
+
+Open the page for a company without applications.
+
+Expected:
+An appropriate empty-state message is displayed.
+
+### Test 4 - Company Isolation
+
+Attempt to retrieve another company's applications.
+
+Expected:
+The recruiter cannot access those applications.
+
+### Test 5 - Resume Access
+
+After resume integration, verify that a recruiter can access
+only resumes belonging to applicants for that company's
+opportunities.
+
+---
+
+## Expected Result
+
+The recruiter portal can retrieve and display application
+records associated with the recruiter's company.
+
+This creates the foundation for applicant shortlisting,
+rejection, status management and interview scheduling.

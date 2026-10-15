@@ -1,0 +1,221 @@
+# Week 6 - Manage Job Postings
+
+## Feature
+
+Edit, Delete and Close Job Postings
+
+## Module
+
+Recruiter & Company Portal
+
+## Developer
+
+Saurabh
+
+## Branch
+
+feature/saurabh
+
+---
+
+## Objective
+
+The objective of this feature is to allow recruiters to manage
+their previously created job postings.
+
+The recruiter should be able to:
+
+- Edit job details
+- Delete a job posting
+- Close a job posting
+- View the current job status
+- Manage postings only after authentication
+
+---
+
+## Main Workflow
+
+Recruiter Login
+        |
+        v
+Recruiter Dashboard
+        |
+        v
+Manage Job Postings
+        |
+        +------> Edit Job
+        |
+        +------> Close Job
+        |
+        +------> Delete Job
+        |
+        v
+Database
+
+---
+
+## Edit Job
+
+The recruiter can modify information such as:
+
+- Job title
+- Job description
+- Location
+- Eligibility
+- Salary
+- Application deadline
+
+Before updating the database, the application validates
+required fields.
+
+---
+
+## Delete Job
+
+The recruiter can permanently remove a job posting.
+
+A confirmation message is shown before deletion to reduce
+accidental deletion.
+
+---
+
+## Close Job
+
+Closing a job is different from deleting it.
+
+A closed job remains stored in the system but is no longer
+available for new applications.
+
+The job status should become:
+
+CLOSED
+
+---
+
+## Authentication
+
+Only an authenticated recruiter should be allowed to access
+the job management page.
+
+The servlet checks:
+
+session.getAttribute("userId")
+
+If the user is not logged in, the application redirects
+the user to the login page.
+
+---
+
+## Files
+
+### Java Servlet
+
+src/main/java/com/placement/controller/ManageJobServlet.java
+
+Responsible for:
+
+- Authentication check
+- Reading job ID
+- Reading requested action
+- Validating input
+- Processing edit/delete/close workflow
+
+### JSP
+
+src/main/webapp/manage-jobs.jsp
+
+Responsible for:
+
+- Displaying job postings
+- Displaying job status
+- Edit button
+- Close button
+- Delete button
+- Success/error messages
+
+---
+
+## Database Operations
+
+The existing Opportunity DAO should be used for database
+operations.
+
+Required operations:
+
+EDIT:
+Update job information.
+
+DELETE:
+Remove the selected job posting.
+
+CLOSE:
+Update the job status to CLOSED.
+
+The existing DAO method names should be reused instead of
+creating duplicate database logic.
+
+---
+
+## Validation
+
+The following validations should be performed:
+
+- Job ID must be present.
+- Job title must not be empty.
+- Job description must not be empty.
+- Recruiter must be authenticated.
+- Unknown actions should be rejected.
+
+---
+
+## Testing
+
+### Test 1 - Authentication
+
+Open the manage jobs page without logging in.
+
+Expected:
+
+User is redirected to the login page.
+
+### Test 2 - Edit
+
+Select Edit and change job information.
+
+Expected:
+
+Updated information is stored and displayed.
+
+### Test 3 - Close
+
+Select Close.
+
+Expected:
+
+Job status changes to CLOSED.
+
+### Test 4 - Delete
+
+Select Delete and confirm.
+
+Expected:
+
+Job posting is removed.
+
+### Test 5 - Invalid Job ID
+
+Submit a request without a job ID.
+
+Expected:
+
+An error message is displayed.
+
+---
+
+## Expected Result
+
+Recruiters can manage existing job postings through a dedicated
+job management workflow.
+
+This feature extends the job posting functionality and prepares
+the recruiter portal for applicant management.

@@ -1,0 +1,232 @@
+# Week 7 - Create Internship Posting
+
+## Feature
+
+Create Internship Posting
+
+## Module
+
+Recruiter & Company Portal
+
+## Developer
+
+Saurabh
+
+## Branch
+
+feature/saurabh
+
+---
+
+## Objective
+
+The objective of this feature is to allow authenticated
+recruiters to create internship opportunities for students.
+
+The recruiter can provide:
+
+- Internship title
+- Description
+- Location
+- Duration
+- Stipend
+- Eligibility
+- Application deadline
+
+---
+
+## Workflow
+
+Recruiter Login
+       |
+       v
+Recruiter Dashboard
+       |
+       v
+Create Internship
+       |
+       v
+Enter Internship Details
+       |
+       v
+Validate Input
+       |
+       v
+Database
+       |
+       v
+Internship Available to Students
+
+---
+
+## Authentication
+
+Only an authenticated recruiter should be allowed to
+create an internship.
+
+The servlet checks:
+
+session.getAttribute("userId")
+
+If the session does not contain a valid user ID, the
+recruiter is redirected to the login page.
+
+---
+
+## Validation
+
+The following fields are required:
+
+- Internship title
+- Description
+- Duration
+
+Other fields may be optional depending on the database
+schema and project requirements.
+
+---
+
+## Internship Information
+
+### Title
+
+The name of the internship position.
+
+Example:
+
+Java Developer Intern
+
+### Description
+
+Contains information about the internship role and
+responsibilities.
+
+### Location
+
+Specifies where the internship is conducted.
+
+Example:
+
+Jaipur
+
+or
+
+Remote
+
+### Duration
+
+Specifies the length of the internship.
+
+Example:
+
+3 Months
+
+### Stipend
+
+Specifies the stipend offered by the company.
+
+### Eligibility
+
+Specifies the student qualifications required.
+
+Example:
+
+B.Tech IT / CSE
+
+### Deadline
+
+Specifies the last date for applications.
+
+---
+
+## Files
+
+### Servlet
+
+src/main/java/com/placement/controller/InternshipServlet.java
+
+Responsibilities:
+
+- Authenticate recruiter
+- Read form data
+- Validate required fields
+- Process internship creation
+- Forward success/error messages
+
+### JSP
+
+src/main/webapp/internship-posting.jsp
+
+Responsibilities:
+
+- Display internship form
+- Collect internship information
+- Display validation messages
+- Submit data to the servlet
+
+---
+
+## Database Integration
+
+The validated internship information should be stored
+through the existing project DAO/database layer.
+
+The existing DAO and model classes should be reused.
+
+Do not create duplicate database methods if an equivalent
+method already exists in the project.
+
+---
+
+## Testing
+
+### Test 1 - Login Protection
+
+Open the internship page without logging in.
+
+Expected:
+
+The user is redirected to the login page.
+
+### Test 2 - Empty Title
+
+Submit the form without an internship title.
+
+Expected:
+
+"Internship title is required."
+
+### Test 3 - Empty Description
+
+Submit the form without a description.
+
+Expected:
+
+"Internship description is required."
+
+### Test 4 - Empty Duration
+
+Submit the form without duration.
+
+Expected:
+
+"Internship duration is required."
+
+### Test 5 - Valid Internship
+
+Enter all required information and submit.
+
+Expected:
+
+Internship posting is successfully processed.
+
+---
+
+## Expected Result
+
+Recruiters can create internship postings through the
+Recruiter & Company Portal.
+
+The internship feature extends the opportunity management
+functionality and provides internship opportunities that
+can later be consumed by the Student Portal.
